@@ -348,7 +348,7 @@ function initProducts() {
     return `
       <article class="product-card reveal visible${hiddenClass}" data-category="${product.categoryId}" data-product-id="${product.id}" data-index="${index}">
         <div class="${getImageClass(product)}">
-          <img src="${product.image}" alt="${product.name}">
+          <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.onerror=null;this.src='imagens/bolo1.jpg';">
           ${badge ? `<span class="product-card__badge${badgeClass}">${badge}</span>` : ''}
         </div>
         <div class="product-card__body">
@@ -387,7 +387,7 @@ function initProducts() {
         ${galleryImages.map((item, index) => `
           <article class="menu-gallery-card${index >= PRODUCTS_PER_PAGE ? ' menu-gallery-card--paginated-hidden' : ''}" data-gallery-product='${JSON.stringify(item)}' data-category="gallery" data-index="${index}">
             <div class="menu-gallery-card__image">
-              <img src="${item.image}" alt="${item.name}" decoding="async">
+              <img src="${item.image}" alt="${item.name}" decoding="async" loading="lazy" onerror="this.onerror=null;this.src='imagens/bolo1.jpg';">
               <span>Inspiração ${String(index + 1).padStart(2, '0')}</span>
             </div>
             <div class="menu-gallery-card__body">
@@ -657,7 +657,7 @@ function initFeatured() {
     return `
       <div class="featured-card reveal visible">
         <div class="featured-card__img">
-          <img src="${p.image}" alt="${p.name}" decoding="async" width="160" height="200">
+          <img src="${p.image}" alt="${p.name}" decoding="async" width="160" height="200" loading="lazy" onerror="this.onerror=null;this.src='imagens/bolo1.jpg';">
         </div>
         <div class="featured-card__body">
           <span class="featured-card__rank">#${i + 1} Mais Vendido</span>
@@ -718,7 +718,7 @@ function initGallery() {
 
   grid.innerHTML = galleryItems.map((item, i) => `
     <div class="galeria__item reveal${i >= GALLERY_PER_PAGE ? ' galeria__item--hidden' : ''}" data-index="${i}">
-      <img src="${item.src}" alt="${item.product.name}" decoding="async">
+      <img src="${item.src}" alt="${item.product.name}" decoding="async" loading="lazy" onerror="this.onerror=null;this.src='imagens/bolo1.jpg';">
     </div>
   `).join('');
 

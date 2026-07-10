@@ -1,11 +1,11 @@
-# Flor de Açúcar — Site amostra para confeitarias
+# Flor de Açúcar — Site demonstração para confeitarias
 
-Modelo de site no mesmo formato do projeto de referência (cardápio, WhatsApp, galeria, avaliações, FAQ e contato), com visual próprio.
+Modelo de site para apresentar a outras confeitarias (cardápio, WhatsApp, galeria, avaliações, FAQ e contato).
 
 ## Como abrir
 
-Abra `index.html` no navegador.
+Abra `index.html` no navegador. Se as fotos não atualizarem, use Ctrl+F5 ou aba anônima.
 
-## Personalizar
+## Fotos
 
-Edite `js/storage.js` para trocar nome, WhatsApp, Instagram, textos, produtos e fotos.
+As imagens em `imagens/` são fotos de bolos de banco livre (Pexels), ideais para demonstração. Troque pelas fotos reais da cliente quando for personalizar.

@@ -4,26 +4,45 @@
  */
 const Storage = (() => {
   const KEY = 'confeitaria_amostra_data';
-  const DATA_VERSION = 3;
+  const DATA_VERSION = 6;
 
   const IMG = {
-    hero: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1600&q=80',
-    loja: 'https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=900&q=80',
-    bolo1: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=800&q=80',
-    bolo2: 'https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=800&q=80',
-    bolo3: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80',
-    bolo4: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=800&q=80',
-    bolo5: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=800&q=80',
-    bolo6: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=800&q=80',
-    pronto1: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=800&q=80',
-    pronto2: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&q=80',
-    pronto3: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c3b7?w=800&q=80',
-    bento1: 'https://images.unsplash.com/photo-1612203985729-70726954388c?w=800&q=80',
-    bento2: 'https://images.unsplash.com/photo-1557925923-cd4648e211a0?w=800&q=80',
-    doces1: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=800&q=80',
-    doces2: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800&q=80',
-    destaque1: 'https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?w=800&q=80',
-    destaque2: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=800&q=80'
+    hero: 'imagens/hero.jpg',
+    loja: 'imagens/loja.jpg',
+    bolo1: 'imagens/bolo1.jpg',
+    bolo2: 'imagens/bolo2.jpg',
+    bolo3: 'imagens/bolo3.jpg',
+    bolo4: 'imagens/bolo4.jpg',
+    bolo5: 'imagens/bolo5.jpg',
+    bolo6: 'imagens/bolo6.jpg',
+    bolo7: 'imagens/bolo7.jpg',
+    bolo8: 'imagens/bolo8.jpg',
+    pronto1: 'imagens/pronto1.jpg',
+    pronto2: 'imagens/pronto2.jpg',
+    pronto3: 'imagens/pronto3.jpg',
+    pronto4: 'imagens/pronto4.jpg',
+    bento1: 'imagens/bento1.jpg',
+    bento2: 'imagens/bento2.jpg',
+    bento3: 'imagens/bento3.jpg',
+    bento4: 'imagens/bento4.jpg',
+    doces1: 'imagens/doces1.jpg',
+    doces2: 'imagens/doces2.jpg',
+    destaque1: 'imagens/destaque1.jpg',
+    destaque2: 'imagens/destaque2.jpg',
+    destaque3: 'imagens/destaque3.jpg',
+    destaque4: 'imagens/destaque4.jpg',
+    galeria1: 'imagens/galeria1.jpg',
+    galeria2: 'imagens/galeria2.jpg',
+    galeria3: 'imagens/galeria3.jpg',
+    galeria4: 'imagens/galeria4.jpg',
+    galeria5: 'imagens/galeria5.jpg',
+    galeria6: 'imagens/galeria6.jpg',
+    galeria7: 'imagens/galeria7.jpg',
+    galeria8: 'imagens/galeria8.jpg',
+    galeria9: 'imagens/galeria9.jpg',
+    galeria10: 'imagens/galeria10.jpg',
+    galeria11: 'imagens/galeria11.jpg',
+    galeria12: 'imagens/galeria12.jpg'
   };
 
   const defaultData = {
@@ -65,24 +84,31 @@ const Storage = (() => {
       { id: 'cat6', name: 'Kits', slug: 'kit-bento-doces' }
     ],
     products: [
-      { id: 'p1', name: 'Bolo Floral Champagne', description: 'Bolo de festa com flores comestíveis e cobertura aveludada.', price: 0, categoryId: 'cat1', image: IMG.bolo1, featured: true },
-      { id: 'p2', name: 'Bolo Chocolate Belga', description: 'Camadas de chocolate intenso com ganache e morangos.', price: 0, categoryId: 'cat1', image: IMG.bolo2, featured: true },
-      { id: 'p3', name: 'Bolo Nude Frutas', description: 'Estilo naked cake com frutas frescas e creme de baunilha.', price: 0, categoryId: 'cat1', image: IMG.bolo3, featured: true },
-      { id: 'p4', name: 'Bolo Red Velvet', description: 'Massa vermelha clássica com cream cheese e acabamento limpo.', price: 0, categoryId: 'cat1', image: IMG.bolo4, featured: false },
-      { id: 'p5', name: 'Bolo Temático Infantil', description: 'Personalizado com tema, cores e topo à escolha do cliente.', price: 0, categoryId: 'cat1', image: IMG.bolo5, featured: false },
-      { id: 'p6', name: 'Bolo Casamento Clássico', description: 'Dois andares com textura lisa e detalhes delicados.', price: 0, categoryId: 'cat1', image: IMG.bolo6, featured: true },
-      { id: 'p7', name: 'Bolo do Dia — Chocolate', description: 'Pronta entrega com cobertura de chocolate e brigadeiros.', price: 65, categoryId: 'cat3', image: IMG.pronto1, featured: false },
-      { id: 'p8', name: 'Bolo do Dia — Ninho', description: 'Pronta entrega com creme ninho e finalização branca.', price: 75, categoryId: 'cat3', image: IMG.pronto2, featured: false },
-      { id: 'p9', name: 'Bolo do Dia — Morango', description: 'Pronta entrega com morangos e chantilly.', price: 95, categoryId: 'cat3', image: IMG.pronto3, featured: false },
-      { id: 'p10', name: 'Bento Cake Frase', description: 'Mini bolo na marmita com frase personalizada no topo.', price: 40, categoryId: 'cat4', image: IMG.bento1, featured: false },
-      { id: 'p11', name: 'Bento Cake Presente', description: 'Ideal para surpresas rápidas com mensagem especial.', price: 40, categoryId: 'cat4', image: IMG.bento2, featured: false },
-      { id: 'p12', name: 'Caixa de Brigadeiros', description: '20 unidades sortidas: tradicional, ninho e belga.', price: 55, categoryId: 'cat2', image: IMG.doces1, featured: false },
-      { id: 'p13', name: 'Docinhos Finos', description: 'Seleção de doces para festas e mesas de café.', price: 130, categoryId: 'cat2', image: IMG.doces2, featured: false },
-      { id: 'p14', name: 'Bolo Destaque Jardim', description: 'Modelo especial com flores e acabamento premium.', price: 0, categoryId: 'cat5', image: IMG.destaque1, featured: false },
-      { id: 'p15', name: 'Bolo Destaque Frutas', description: 'Visual marcante para mesas de festa e ensaios.', price: 0, categoryId: 'cat5', image: IMG.destaque2, featured: false },
+      { id: 'p1', name: 'Bolo de Casamento', description: 'Bolo elegante para casamentos, com acabamento limpo e flores.', price: 0, categoryId: 'cat1', image: IMG.bolo1, featured: true },
+      { id: 'p2', name: 'Bolo de Chocolate', description: 'Camadas de chocolate com cobertura cremosa e visual marcante.', price: 0, categoryId: 'cat1', image: IMG.bolo2, featured: true },
+      { id: 'p3', name: 'Bolo de Aniversário', description: 'Bolo festivo personalizado para comemorações especiais.', price: 0, categoryId: 'cat1', image: IMG.bolo3, featured: true },
+      { id: 'p4', name: 'Bolo com Frutas', description: 'Decoração com frutas frescas e creme suave.', price: 0, categoryId: 'cat1', image: IMG.bolo4, featured: false },
+      { id: 'p5', name: 'Bolo Floral', description: 'Acabamento delicado com flores e tons suaves.', price: 0, categoryId: 'cat1', image: IMG.bolo5, featured: false },
+      { id: 'p6', name: 'Bolo Naked Cake', description: 'Estilo rústico com camadas aparentes e frutas.', price: 0, categoryId: 'cat1', image: IMG.bolo6, featured: true },
+      { id: 'p19', name: 'Bolo Red Velvet', description: 'Clássico red velvet com cream cheese.', price: 0, categoryId: 'cat1', image: IMG.bolo7, featured: false },
+      { id: 'p20', name: 'Bolo Decorado Premium', description: 'Modelo especial para festas e ensaios.', price: 0, categoryId: 'cat1', image: IMG.bolo8, featured: false },
+      { id: 'p7', name: 'Bolo do Dia — Chocolate', description: 'Opção de pronta entrega com cobertura de chocolate.', price: 65, categoryId: 'cat3', image: IMG.pronto1, featured: false },
+      { id: 'p8', name: 'Bolo do Dia — Baunilha', description: 'Pronta entrega com cobertura clara e finalização suave.', price: 75, categoryId: 'cat3', image: IMG.pronto2, featured: false },
+      { id: 'p9', name: 'Bolo do Dia — Frutas', description: 'Pronta entrega com frutas e chantilly.', price: 95, categoryId: 'cat3', image: IMG.pronto3, featured: false },
+      { id: 'p21', name: 'Bolo do Dia — Brigadeiro', description: 'Pronta entrega com acabamento em chocolate.', price: 70, categoryId: 'cat3', image: IMG.pronto4, featured: false },
+      { id: 'p10', name: 'Bento Cake Frase', description: 'Mini bolo com frase personalizada no topo.', price: 40, categoryId: 'cat4', image: IMG.bento1, featured: false },
+      { id: 'p11', name: 'Bento Cake Presente', description: 'Ideal para surpresas e datas especiais.', price: 40, categoryId: 'cat4', image: IMG.bento2, featured: false },
+      { id: 'p22', name: 'Bento Cake Fofo', description: 'Mini bolo delicado para presentear.', price: 40, categoryId: 'cat4', image: IMG.bento3, featured: false },
+      { id: 'p23', name: 'Bento Cake Especial', description: 'Versão especial com decoração artesanal.', price: 40, categoryId: 'cat4', image: IMG.bento4, featured: false },
+      { id: 'p12', name: 'Caixa de Brigadeiros', description: 'Docinhos sortidos para festas e presentes.', price: 55, categoryId: 'cat2', image: IMG.doces1, featured: false },
+      { id: 'p13', name: 'Docinhos Finos', description: 'Seleção de doces para mesa de festa.', price: 130, categoryId: 'cat2', image: IMG.doces2, featured: false },
+      { id: 'p14', name: 'Bolo Destaque Jardim', description: 'Modelo premium com visual sofisticado.', price: 0, categoryId: 'cat5', image: IMG.destaque1, featured: false },
+      { id: 'p15', name: 'Bolo Destaque Celebração', description: 'Para mesas de festa e momentos especiais.', price: 0, categoryId: 'cat5', image: IMG.destaque2, featured: false },
+      { id: 'p24', name: 'Bolo Destaque Luxo', description: 'Acabamento elegante e presença marcante.', price: 0, categoryId: 'cat5', image: IMG.destaque3, featured: false },
+      { id: 'p25', name: 'Bolo Destaque Festa', description: 'Ideal para aniversários e comemorações.', price: 0, categoryId: 'cat5', image: IMG.destaque4, featured: false },
       { id: 'p16', name: 'Bento Cake na Marmita', description: 'Bento individual · aprox. 300g · 2 a 3 fatias.', price: 40, categoryId: 'cat6', image: IMG.bento1, featured: false },
-      { id: 'p17', name: 'Kit Bento + 6 Doces', description: 'Bento personalizado com 6 docinhos sortidos.', price: 55, categoryId: 'cat6', image: IMG.bento2, featured: false },
-      { id: 'p18', name: 'Kit Bento + 16 Doces', description: 'Kit completo para presentear ou comemorar.', price: 65, categoryId: 'cat6', image: IMG.doces1, featured: false }
+      { id: 'p17', name: 'Kit Bento + 6 Doces', description: 'Bento personalizado com 6 docinhos.', price: 55, categoryId: 'cat6', image: IMG.bento2, featured: false },
+      { id: 'p18', name: 'Kit Bento + 16 Doces', description: 'Kit completo para presentear ou comemorar.', price: 65, categoryId: 'cat6', image: IMG.bento3, featured: false }
     ],
     clients: [
       { id: 'c1', name: 'Ana Paula Silva', email: 'ana@email.com', phone: '31987654321', address: 'Centro' },
@@ -109,9 +135,13 @@ const Storage = (() => {
       { id: 'f5', question: 'Onde vocês ficam?', answer: 'Rua das Flores, 120 — Centro. Atendemos por delivery e retirada — confirme disponibilidade pelo WhatsApp.' }
     ],
     gallery: [
-      IMG.bolo1, IMG.bolo2, IMG.bolo3, IMG.bolo4, IMG.bolo5, IMG.bolo6,
-      IMG.pronto1, IMG.pronto2, IMG.pronto3, IMG.bento1, IMG.bento2,
-      IMG.doces1, IMG.doces2, IMG.destaque1, IMG.destaque2, IMG.loja
+      IMG.bolo1, IMG.bolo2, IMG.bolo3, IMG.bolo4, IMG.bolo5, IMG.bolo6, IMG.bolo7, IMG.bolo8,
+      IMG.pronto1, IMG.pronto2, IMG.pronto3, IMG.pronto4,
+      IMG.bento1, IMG.bento2, IMG.bento3, IMG.bento4,
+      IMG.destaque1, IMG.destaque2, IMG.destaque3, IMG.destaque4,
+      IMG.galeria1, IMG.galeria2, IMG.galeria3, IMG.galeria4,
+      IMG.galeria5, IMG.galeria6, IMG.galeria7, IMG.galeria8,
+      IMG.galeria9, IMG.galeria10, IMG.galeria11, IMG.galeria12
     ]
   };
 
@@ -132,6 +162,33 @@ const Storage = (() => {
     }
     if ((data.version || 0) < 3) {
       data.categories = defaultData.categories;
+    }
+    if ((data.version || 0) < 4) {
+      data.settings = {
+        ...data.settings,
+        banner: defaultData.settings.banner,
+        sobreImage: defaultData.settings.sobreImage
+      };
+      data.products = defaultData.products;
+      data.gallery = defaultData.gallery;
+    }
+    if ((data.version || 0) < 5) {
+      data.settings = {
+        ...data.settings,
+        banner: defaultData.settings.banner,
+        sobreImage: defaultData.settings.sobreImage
+      };
+      data.products = defaultData.products;
+      data.gallery = defaultData.gallery;
+    }
+    if ((data.version || 0) < 6) {
+      data.settings = {
+        ...data.settings,
+        banner: defaultData.settings.banner,
+        sobreImage: defaultData.settings.sobreImage
+      };
+      data.products = defaultData.products;
+      data.gallery = defaultData.gallery;
     }
     if ((data.version || 0) < DATA_VERSION) {
       data.version = DATA_VERSION;
