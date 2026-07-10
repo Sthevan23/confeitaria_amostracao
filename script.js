@@ -289,23 +289,13 @@ function initProducts() {
       <div class="ready-delivery-info reveal visible" data-category="cat3">
         <article>
           <i class="fas fa-store"></i>
-          <h4>Bolos prontos do dia</h4>
-          <p>Todos os dias temos bolos à pronta entrega, feitos com sabores escolhidos pela confeitaria conforme o que mais vende no dia.</p>
+          <h4>Bolos do dia</h4>
+          <p>Pronta entrega diária. Consulte os recheios disponíveis.</p>
         </article>
         <article>
-          <i class="fas fa-list-check"></i>
-          <h4>Consulte os recheios</h4>
-          <p>Consulte a disponibilidade dos recheios de pronta entrega antes de reservar seu bolo.</p>
-        </article>
-        <article>
-          <i class="fas fa-wand-magic-sparkles"></i>
-          <h4>Monte o seu bolo</h4>
-          <p>Você pode montar seu bolo para retirar no mesmo dia. Pedido com no mínimo 40 min de antecedência.</p>
-        </article>
-        <article>
-          <i class="fas fa-gift"></i>
-          <h4>Modelos de kit</h4>
-          <p>Escolha entre bolo individual, kit com 6 docinhos ou kit com 16 doces.</p>
+          <i class="fas fa-clock"></i>
+          <h4>Retirada rápida</h4>
+          <p>Monte o seu com no mínimo 40 min de antecedência.</p>
         </article>
       </div>
     `;
@@ -392,7 +382,6 @@ function initProducts() {
     return `
       <div class="products-group-title products-group-title--gallery reveal visible" data-category="gallery">
         <span>Galeria</span>
-        <p>Inspirações de bolos já feitos para você escolher um modelo e personalizar do seu jeito.</p>
       </div>
       <div class="menu-gallery-showcase reveal visible" data-category="gallery">
         ${galleryImages.map((item, index) => `
@@ -424,7 +413,6 @@ function initProducts() {
     return `
       <div class="products-group-title reveal visible" data-category="${category.id}">
         <span>${category.name}</span>
-        <p>${category.id === 'cat3' ? 'Bolos prontos, kits e opção de montar para retirar no mesmo dia.' : category.id === 'cat4' ? 'Escolha o modelo e monte a frase que vai no topo do seu Bento Cake.' : category.id === 'cat5' ? 'Modelos especiais para inspirar sua encomenda personalizada.' : category.id === 'cat6' ? 'Kits com bento cake personalizado e docinhos para presentear.' : 'Opções feitas sob encomenda para momentos especiais.'}</p>
       </div>
       ${category.id === 'cat3' ? renderReadyDeliveryInfo() : ''}
       ${categoryProducts.map((product, index) => renderProductCard(product, index)).join('')}

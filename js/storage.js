@@ -4,7 +4,7 @@
  */
 const Storage = (() => {
   const KEY = 'confeitaria_amostra_data';
-  const DATA_VERSION = 2;
+  const DATA_VERSION = 3;
 
   const IMG = {
     hero: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1600&q=80',
@@ -57,12 +57,12 @@ const Storage = (() => {
       password: 'demo123'
     },
     categories: [
-      { id: 'cat1', name: 'Bolos Personalizados', slug: 'bolos' },
+      { id: 'cat1', name: 'Personalizados', slug: 'bolos' },
       { id: 'cat2', name: 'Doces', slug: 'doces' },
       { id: 'cat3', name: 'Pronta Entrega', slug: 'pronta-entrega' },
       { id: 'cat4', name: 'Bento Cake', slug: 'bento-cake' },
-      { id: 'cat5', name: 'Bolos Destaques', slug: 'bolos-destaques' },
-      { id: 'cat6', name: 'Kit Bento e Doces', slug: 'kit-bento-doces' }
+      { id: 'cat5', name: 'Destaques', slug: 'bolos-destaques' },
+      { id: 'cat6', name: 'Kits', slug: 'kit-bento-doces' }
     ],
     products: [
       { id: 'p1', name: 'Bolo Floral Champagne', description: 'Bolo de festa com flores comestíveis e cobertura aveludada.', price: 0, categoryId: 'cat1', image: IMG.bolo1, featured: true },
@@ -129,6 +129,9 @@ const Storage = (() => {
         sobreText2: defaultData.settings.sobreText2
       };
       data.faq = defaultData.faq;
+    }
+    if ((data.version || 0) < 3) {
+      data.categories = defaultData.categories;
     }
     if ((data.version || 0) < DATA_VERSION) {
       data.version = DATA_VERSION;
