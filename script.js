@@ -512,11 +512,6 @@ function initProducts() {
     moreBtn.dataset.shown = String(shown);
     updateCategoryPaginationButtons(categoryId);
     filterProducts(activeCategory);
-
-    if (nextShown <= PRODUCTS_PER_PAGE) {
-      const title = grid.querySelector(`.products-group-title[data-category="${categoryId}"]`);
-      title?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   }
 
   function revealMoreItems(categoryId) {
@@ -766,10 +761,6 @@ function initGallery() {
       }
     });
     updateLoadMoreButton();
-
-    if (nextShown <= GALLERY_PER_PAGE) {
-      document.getElementById('galeria')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   }
 
   function revealMoreGallery() {

@@ -4,7 +4,7 @@
  */
 const Storage = (() => {
   const KEY = 'confeitaria_amostra_data';
-  const DATA_VERSION = 6;
+  const DATA_VERSION = 7;
 
   const IMG = {
     hero: 'imagens/hero.jpg',
@@ -186,6 +186,19 @@ const Storage = (() => {
         ...data.settings,
         banner: defaultData.settings.banner,
         sobreImage: defaultData.settings.sobreImage
+      };
+      data.products = defaultData.products;
+      data.gallery = defaultData.gallery;
+    }
+    if ((data.version || 0) < 7) {
+      // Garante fotos locais (corrige cache antigo com Unsplash/vazio)
+      data.settings = {
+        ...data.settings,
+        banner: defaultData.settings.banner,
+        sobreImage: defaultData.settings.sobreImage,
+        logo: data.settings.logo && String(data.settings.logo).startsWith('imagens/')
+          ? data.settings.logo
+          : ''
       };
       data.products = defaultData.products;
       data.gallery = defaultData.gallery;
