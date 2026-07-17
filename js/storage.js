@@ -4,45 +4,48 @@
  */
 const Storage = (() => {
   const KEY = 'confeitaria_amostra_data';
-  const DATA_VERSION = 7;
+  const DATA_VERSION = 9;
+  const IMG_VER = 'v9';
+
+  const img = (file) => `imagens/${file}?${IMG_VER}`;
 
   const IMG = {
-    hero: 'imagens/hero.jpg',
-    loja: 'imagens/loja.jpg',
-    bolo1: 'imagens/bolo1.jpg',
-    bolo2: 'imagens/bolo2.jpg',
-    bolo3: 'imagens/bolo3.jpg',
-    bolo4: 'imagens/bolo4.jpg',
-    bolo5: 'imagens/bolo5.jpg',
-    bolo6: 'imagens/bolo6.jpg',
-    bolo7: 'imagens/bolo7.jpg',
-    bolo8: 'imagens/bolo8.jpg',
-    pronto1: 'imagens/pronto1.jpg',
-    pronto2: 'imagens/pronto2.jpg',
-    pronto3: 'imagens/pronto3.jpg',
-    pronto4: 'imagens/pronto4.jpg',
-    bento1: 'imagens/bento1.jpg',
-    bento2: 'imagens/bento2.jpg',
-    bento3: 'imagens/bento3.jpg',
-    bento4: 'imagens/bento4.jpg',
-    doces1: 'imagens/doces1.jpg',
-    doces2: 'imagens/doces2.jpg',
-    destaque1: 'imagens/destaque1.jpg',
-    destaque2: 'imagens/destaque2.jpg',
-    destaque3: 'imagens/destaque3.jpg',
-    destaque4: 'imagens/destaque4.jpg',
-    galeria1: 'imagens/galeria1.jpg',
-    galeria2: 'imagens/galeria2.jpg',
-    galeria3: 'imagens/galeria3.jpg',
-    galeria4: 'imagens/galeria4.jpg',
-    galeria5: 'imagens/galeria5.jpg',
-    galeria6: 'imagens/galeria6.jpg',
-    galeria7: 'imagens/galeria7.jpg',
-    galeria8: 'imagens/galeria8.jpg',
-    galeria9: 'imagens/galeria9.jpg',
-    galeria10: 'imagens/galeria10.jpg',
-    galeria11: 'imagens/galeria11.jpg',
-    galeria12: 'imagens/galeria12.jpg'
+    hero: img('hero.jpg'),
+    loja: img('loja.jpg'),
+    bolo1: img('bolo1.jpg'),
+    bolo2: img('bolo2.jpg'),
+    bolo3: img('bolo3.jpg'),
+    bolo4: img('bolo4.jpg'),
+    bolo5: img('bolo5.jpg'),
+    bolo6: img('bolo6.jpg'),
+    bolo7: img('bolo7.jpg'),
+    bolo8: img('bolo8.jpg'),
+    pronto1: img('pronto1.jpg'),
+    pronto2: img('pronto2.jpg'),
+    pronto3: img('pronto3.jpg'),
+    pronto4: img('pronto4.jpg'),
+    bento1: img('bento1.jpg'),
+    bento2: img('bento2.jpg'),
+    bento3: img('bento3.jpg'),
+    bento4: img('bento4.jpg'),
+    doces1: img('doces1.jpg'),
+    doces2: img('doces2.jpg'),
+    destaque1: img('destaque1.jpg'),
+    destaque2: img('destaque2.jpg'),
+    destaque3: img('destaque3.jpg'),
+    destaque4: img('destaque4.jpg'),
+    galeria1: img('galeria1.jpg'),
+    galeria2: img('galeria2.jpg'),
+    galeria3: img('galeria3.jpg'),
+    galeria4: img('galeria4.jpg'),
+    galeria5: img('galeria5.jpg'),
+    galeria6: img('galeria6.jpg'),
+    galeria7: img('galeria7.jpg'),
+    galeria8: img('galeria8.jpg'),
+    galeria9: img('galeria9.jpg'),
+    galeria10: img('galeria10.jpg'),
+    galeria11: img('galeria11.jpg'),
+    galeria12: img('galeria12.jpg')
   };
 
   const defaultData = {
@@ -77,11 +80,11 @@ const Storage = (() => {
     },
     categories: [
       { id: 'cat1', name: 'Personalizados', slug: 'bolos' },
-      { id: 'cat2', name: 'Doces', slug: 'doces' },
+      { id: 'cat2', name: 'Clássicos', slug: 'classicos' },
       { id: 'cat3', name: 'Pronta Entrega', slug: 'pronta-entrega' },
       { id: 'cat4', name: 'Bento Cake', slug: 'bento-cake' },
       { id: 'cat5', name: 'Destaques', slug: 'bolos-destaques' },
-      { id: 'cat6', name: 'Kits', slug: 'kit-bento-doces' }
+      { id: 'cat6', name: 'Kits', slug: 'kits-bento' }
     ],
     products: [
       { id: 'p1', name: 'Bolo de Casamento', description: 'Bolo elegante para casamentos, com acabamento limpo e flores.', price: 0, categoryId: 'cat1', image: IMG.bolo1, featured: true },
@@ -100,15 +103,15 @@ const Storage = (() => {
       { id: 'p11', name: 'Bento Cake Presente', description: 'Ideal para surpresas e datas especiais.', price: 40, categoryId: 'cat4', image: IMG.bento2, featured: false },
       { id: 'p22', name: 'Bento Cake Fofo', description: 'Mini bolo delicado para presentear.', price: 40, categoryId: 'cat4', image: IMG.bento3, featured: false },
       { id: 'p23', name: 'Bento Cake Especial', description: 'Versão especial com decoração artesanal.', price: 40, categoryId: 'cat4', image: IMG.bento4, featured: false },
-      { id: 'p12', name: 'Caixa de Brigadeiros', description: 'Docinhos sortidos para festas e presentes.', price: 55, categoryId: 'cat2', image: IMG.doces1, featured: false },
-      { id: 'p13', name: 'Docinhos Finos', description: 'Seleção de doces para mesa de festa.', price: 130, categoryId: 'cat2', image: IMG.doces2, featured: false },
+      { id: 'p12', name: 'Bolo Colorido', description: 'Bolo festivo com camadas coloridas e cobertura cremosa.', price: 0, categoryId: 'cat2', image: IMG.doces1, featured: false },
+      { id: 'p13', name: 'Bolo de Frutas Vermelhas', description: 'Bolo elegante com morangos, framboesas e blueberries.', price: 0, categoryId: 'cat2', image: IMG.doces2, featured: false },
       { id: 'p14', name: 'Bolo Destaque Jardim', description: 'Modelo premium com visual sofisticado.', price: 0, categoryId: 'cat5', image: IMG.destaque1, featured: false },
       { id: 'p15', name: 'Bolo Destaque Celebração', description: 'Para mesas de festa e momentos especiais.', price: 0, categoryId: 'cat5', image: IMG.destaque2, featured: false },
       { id: 'p24', name: 'Bolo Destaque Luxo', description: 'Acabamento elegante e presença marcante.', price: 0, categoryId: 'cat5', image: IMG.destaque3, featured: false },
       { id: 'p25', name: 'Bolo Destaque Festa', description: 'Ideal para aniversários e comemorações.', price: 0, categoryId: 'cat5', image: IMG.destaque4, featured: false },
       { id: 'p16', name: 'Bento Cake na Marmita', description: 'Bento individual · aprox. 300g · 2 a 3 fatias.', price: 40, categoryId: 'cat6', image: IMG.bento1, featured: false },
-      { id: 'p17', name: 'Kit Bento + 6 Doces', description: 'Bento personalizado com 6 docinhos.', price: 55, categoryId: 'cat6', image: IMG.bento2, featured: false },
-      { id: 'p18', name: 'Kit Bento + 16 Doces', description: 'Kit completo para presentear ou comemorar.', price: 65, categoryId: 'cat6', image: IMG.bento3, featured: false }
+      { id: 'p17', name: 'Kit 2 Bento Cakes', description: 'Dois mini bolos para presentear ou compartilhar.', price: 75, categoryId: 'cat6', image: IMG.bento2, featured: false },
+      { id: 'p18', name: 'Kit Bento Especial', description: 'Bento cake especial com decoração artesanal.', price: 65, categoryId: 'cat6', image: IMG.bento3, featured: false }
     ],
     clients: [
       { id: 'c1', name: 'Ana Paula Silva', email: 'ana@email.com', phone: '31987654321', address: 'Centro' },
@@ -199,6 +202,25 @@ const Storage = (() => {
         logo: data.settings.logo && String(data.settings.logo).startsWith('imagens/')
           ? data.settings.logo
           : ''
+      };
+      data.products = defaultData.products;
+      data.gallery = defaultData.gallery;
+    }
+    if ((data.version || 0) < 8) {
+      data.settings = {
+        ...data.settings,
+        banner: defaultData.settings.banner,
+        sobreImage: defaultData.settings.sobreImage
+      };
+      data.products = defaultData.products;
+      data.gallery = defaultData.gallery;
+    }
+    if ((data.version || 0) < 9) {
+      data.categories = defaultData.categories;
+      data.settings = {
+        ...data.settings,
+        banner: defaultData.settings.banner,
+        sobreImage: defaultData.settings.sobreImage
       };
       data.products = defaultData.products;
       data.gallery = defaultData.gallery;
