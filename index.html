@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Flor de Açúcar — confeitaria artesanal. Bolos personalizados, pronta entrega e pedidos pelo WhatsApp.">
+  <meta name="description" content="Flor de Açúcar — confeitaria artesanal. Bolos sob encomenda, pronta entrega e atendimento pelo WhatsApp.">
   <meta name="author" content="Flor de Açúcar">
+  <meta name="theme-color" content="#0e5244">
   <meta property="og:title" content="Flor de Açúcar — Confeitaria Artesanal">
-  <meta property="og:description" content="Doces feitos com tempo, técnica e afeto. Peça pelo WhatsApp.">
+  <meta property="og:description" content="Bolos artesanais sob encomenda e pronta entrega. Peça pelo WhatsApp.">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
   <title>Flor de Açúcar — Confeitaria Artesanal</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%230e5244'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23d9926f'/%3E%3C/svg%3E">
   <script>
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     if (window.location.hash) {
@@ -21,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="style.css?v=11">
+  <link rel="stylesheet" href="style.css?v=14">
 </head>
 <body>
 
@@ -45,15 +48,14 @@
           <li><a href="#inicio" class="header__link active">Início</a></li>
           <li><a href="#sobre" class="header__link">Sobre</a></li>
           <li><a href="#produtos" class="header__link">Cardápio</a></li>
-          <li><a href="#destaques" class="header__link">Destaques</a></li>
           <li><a href="#galeria" class="header__link">Galeria</a></li>
           <li><a href="#avaliacoes" class="header__link">Avaliações</a></li>
           <li><a href="#contato" class="header__link">Contato</a></li>
-          <li class="header__nav-cta"><a href="#produtos" class="btn btn--primary btn--full">Fazer Pedido</a></li>
+          <li class="header__nav-cta"><a href="#produtos" class="btn btn--primary btn--full">Fazer pedido</a></li>
         </ul>
       </nav>
 
-      <a href="#produtos" class="btn btn--primary header__cta">Fazer Pedido</a>
+      <a href="#produtos" class="btn btn--primary header__cta">Fazer pedido</a>
 
       <button class="header__toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -65,12 +67,13 @@
 
   <main>
     <section id="inicio" class="hero">
-      <div class="hero__bg" id="hero-bg" style="background-image: url('imagens/hero.jpg?v9')"></div>
+      <div class="hero__bg" id="hero-bg" style="background-image: url('imagens/hero.jpg?v10')"></div>
       <div class="hero__veil"></div>
       <div class="container hero__content">
-        <p class="hero__brand hero-anim" id="hero-brand">Flor de Açúcar</p>
-        <h1 class="hero__title hero-anim hero-anim--delay-1">
-          Doces que deixam a vida mais
+        <span class="hero__badge hero-anim" id="hero-badge"><i class="fas fa-bolt"></i> Pronta entrega hoje · Retire em 40 min</span>
+        <p class="hero__brand hero-anim hero-anim--delay-1" id="hero-brand">Flor de Açúcar</p>
+        <h1 class="hero__title hero-anim hero-anim--delay-2">
+          Bolos que deixam a vida mais
           <span class="hero__rotate" aria-hidden="true">
             <span>doce</span>
             <span>especial</span>
@@ -78,11 +81,16 @@
             <span>doce</span>
           </span>
         </h1>
-        <p class="hero__lead hero-anim hero-anim--delay-2" id="hero-lead">Bolos personalizados, pronta entrega e pedidos pelo WhatsApp — um site pronto para a sua confeitaria.</p>
+        <p class="hero__lead hero-anim hero-anim--delay-3" id="hero-lead">Encomenda ou pronta entrega — escolha o bolo e feche pelo WhatsApp em minutos.</p>
         <div class="hero__actions hero-anim hero-anim--delay-3">
-          <a href="#produtos" class="btn btn--primary btn--lg btn--pulse">Ver Cardápio</a>
-          <a href="#" class="btn btn--ghost btn--lg" id="hero-whatsapp"><i class="fab fa-whatsapp"></i> Pedir Agora</a>
+          <a href="#produtos" class="btn btn--primary btn--lg btn--pulse">Ver cardápio</a>
+          <a href="#" class="btn btn--whatsapp btn--lg" id="hero-whatsapp"><i class="fab fa-whatsapp"></i> Pedir pelo WhatsApp</a>
         </div>
+        <ul class="hero__trust hero-anim hero-anim--delay-3">
+          <li><i class="fas fa-check"></i> PIX e cartão</li>
+          <li><i class="fas fa-check"></i> Retirada no dia</li>
+          <li><i class="fas fa-check"></i> Feito sob encomenda</li>
+        </ul>
       </div>
       <a href="#sobre" class="hero__scroll" aria-label="Rolar para baixo"><i class="fas fa-chevron-down"></i></a>
     </section>
@@ -100,7 +108,7 @@
           <span>·</span>
           <span>Bento cake</span>
           <span>·</span>
-          <span>Doces finos</span>
+          <span>Retire em 40 min</span>
           <span>·</span>
           <span>Bolos artesanais</span>
           <span>·</span>
@@ -112,7 +120,7 @@
           <span>·</span>
           <span>Bento cake</span>
           <span>·</span>
-          <span>Doces finos</span>
+          <span>Retire em 40 min</span>
           <span>·</span>
         </div>
       </div>
@@ -121,15 +129,15 @@
     <section id="sobre" class="section sobre">
       <div class="container">
         <div class="section__header reveal">
-          <span class="section__tag">Nossa História</span>
-          <h2 class="section__title">Feito à mão, <em>pensado com calma</em></h2>
+          <span class="section__tag">A confeitaria</span>
+          <h2 class="section__title">Feitos à mão, <em>com cuidado</em></h2>
           <p class="section__subtitle" id="sobre-address">Rua das Flores, 120 — Centro</p>
         </div>
 
         <div class="sobre__grid">
           <div class="sobre__content reveal reveal--left">
-            <p class="sobre__text" id="sobre-text1">A <strong>Flor de Açúcar</strong> é um modelo de site para confeitarias artesanais: cardápio, pedidos pelo WhatsApp e galeria de criações.</p>
-            <p class="sobre__text" id="sobre-text2">Bolos personalizados, pronta entrega e kits especiais — tudo pensado para facilitar o pedido do cliente.</p>
+            <p class="sobre__text" id="sobre-text1">A <strong>Flor de Açúcar</strong> faz bolos artesanais sob encomenda e com opções de pronta entrega. Do bento cake ao bolo de festa, tudo pensado para impressionar.</p>
+            <p class="sobre__text" id="sobre-text2">Atendimento pelo WhatsApp, retirada no balcão e combinações de massa, recheio e tamanho do seu jeito.</p>
 
             <div class="sobre__points">
               <div class="sobre__point">
@@ -140,10 +148,10 @@
                 </div>
               </div>
               <div class="sobre__point">
-                <i class="fas fa-clock"></i>
+                <i class="fas fa-bolt"></i>
                 <div>
-                  <h3>Pronta entrega</h3>
-                  <p>Opções do dia e montagem com antecedência combinada.</p>
+                  <h3>Mesmo dia</h3>
+                  <p>Pronta entrega com retirada a partir de 40 minutos.</p>
                 </div>
               </div>
             </div>
@@ -163,8 +171,8 @@
       <div class="container">
         <div class="section__header reveal">
           <span class="section__tag">Cardápio</span>
-          <h2 class="section__title">Nossos <em>produtos</em></h2>
-          <p class="section__subtitle">Bolos, kits, bento cakes e opções para encomenda</p>
+          <h2 class="section__title">Nossos <em>bolos</em></h2>
+          <p class="section__subtitle">Pronta entrega, bento cakes e encomendas personalizadas</p>
         </div>
 
         <div class="produtos__filter reveal" id="category-filter">
@@ -175,9 +183,9 @@
 
         <div class="cardapio-extra reveal">
           <div class="cardapio-extra__header">
-            <span class="section__tag">Tabela</span>
-            <h3>Opções para Encomenda</h3>
-            <p>Escolha massa, recheio, tamanho e doces. Finalizamos pelo WhatsApp.</p>
+            <span class="section__tag">Monte o seu</span>
+            <h3>Encomende do seu jeito</h3>
+            <p>Escolha tamanho, massa e recheio. A gente confirma e fecha pelo WhatsApp.</p>
           </div>
 
           <div class="cardapio-extra__grid">
@@ -244,7 +252,7 @@
           </div>
 
           <a href="#" class="btn btn--primary btn--lg cardapio-extra__cta" id="menu-whatsapp">
-            <i class="fab fa-whatsapp"></i> Fazer Pedido pelo WhatsApp
+            <i class="fab fa-whatsapp"></i> Encomendar pelo WhatsApp
           </a>
         </div>
       </div>
@@ -253,9 +261,9 @@
     <section id="destaques" class="section destaques">
       <div class="container">
         <div class="section__header reveal">
-          <span class="section__tag">Mais Vendidos</span>
-          <h2 class="section__title">Nossos <em>destaques</em></h2>
-          <p class="section__subtitle">Os favoritos de quem já pediu</p>
+          <span class="section__tag">Destaques</span>
+          <h2 class="section__title">Os mais <em>pedidos</em></h2>
+          <p class="section__subtitle">Seleção dos modelos preferidos pelos clientes</p>
         </div>
         <div class="destaques__grid" id="featured-grid"></div>
       </div>
@@ -264,9 +272,9 @@
     <section id="galeria" class="section galeria">
       <div class="container">
         <div class="section__header reveal">
-          <span class="section__tag">Inspiração</span>
-          <h2 class="section__title">Nossa <em>galeria</em></h2>
-          <p class="section__subtitle">Modelos para inspirar sua encomenda</p>
+          <span class="section__tag">Galeria</span>
+          <h2 class="section__title">Ideias para a <em>sua festa</em></h2>
+          <p class="section__subtitle">Inspirações reais para encomendar com confiança</p>
         </div>
         <div class="galeria__grid" id="gallery-grid"></div>
       </div>
@@ -323,7 +331,7 @@
           </form>
 
           <a href="#" class="btn btn--primary btn--full" id="lightbox-order" target="_blank" rel="noopener">
-            <i class="fab fa-whatsapp"></i> Encomendar com essas opções
+            <i class="fab fa-whatsapp"></i> Confirmar pedido no WhatsApp
           </a>
         </div>
       </div>
@@ -361,19 +369,32 @@
           <div class="passo reveal reveal--scale">
             <span class="passo__number">01</span>
             <h3>Escolha</h3>
-            <p>Navegue pelo cardápio e selecione o modelo.</p>
+            <p>Veja o cardápio e toque no bolo que mais combinou.</p>
           </div>
           <div class="passo reveal reveal--scale">
             <span class="passo__number">02</span>
             <h3>Monte</h3>
-            <p>Defina massa, recheio, tamanho e envie no WhatsApp.</p>
+            <p>Defina massa, recheio e tamanho — enviamos tudo no WhatsApp.</p>
           </div>
           <div class="passo reveal reveal--scale">
             <span class="passo__number">03</span>
-            <h3>Receba</h3>
-            <p>Retire ou receba com cuidado e pontualidade.</p>
+            <h3>Retire</h3>
+            <p>No mesmo dia (40 min) ou na data combinada da encomenda.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="cta-band reveal">
+      <div class="container cta-band__inner">
+        <div>
+          <span class="section__tag">Atendimento</span>
+          <h2>Vamos preparar o seu bolo</h2>
+          <p>Fale conosco no WhatsApp para confirmar prazo, sabor e retirada.</p>
+        </div>
+        <a href="#" class="btn btn--primary btn--lg" id="cta-band-whatsapp">
+          <i class="fab fa-whatsapp"></i> Falar no WhatsApp
+        </a>
       </div>
     </section>
 
@@ -381,8 +402,8 @@
       <div class="container">
         <div class="section__header reveal">
           <span class="section__tag">Dúvidas</span>
-          <h2 class="section__title">Perguntas <em>frequentes</em></h2>
-          <p class="section__subtitle">Tudo o que você precisa saber</p>
+          <h2 class="section__title">Antes de <em>pedir</em></h2>
+          <p class="section__subtitle">Respostas rápidas para você fechar com tranquilidade</p>
         </div>
         <div class="faq__list" id="faq-list"></div>
       </div>
@@ -391,9 +412,9 @@
     <section id="contato" class="section contato">
       <div class="container">
         <div class="section__header reveal">
-          <span class="section__tag">Fale Conosco</span>
-          <h2 class="section__title">Entre em <em>contato</em></h2>
-          <p class="section__subtitle">Estamos prontos para atender você</p>
+          <span class="section__tag">Atendimento</span>
+          <h2 class="section__title">Fale com a <em>gente</em></h2>
+          <p class="section__subtitle">WhatsApp é o caminho mais rápido para garantir seu bolo</p>
         </div>
 
         <div class="contato__grid">
@@ -451,7 +472,7 @@
             <span class="header__mark" aria-hidden="true"></span>
             <span id="footer-logo-text">Flor de Açúcar</span>
           </a>
-          <p id="footer-tagline">Doces feitos com tempo, técnica e afeto.</p>
+          <p id="footer-tagline">Bolos artesanais para encomenda e pronta entrega.</p>
           <div class="footer__social">
             <a href="#" id="footer-whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
             <a href="https://www.instagram.com/" id="footer-instagram" aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
@@ -502,7 +523,7 @@
 
   <a href="#" id="hero-instagram" class="visually-hidden" target="_blank" rel="noopener">Instagram</a>
 
-  <script src="js/storage.js?v=9"></script>
-  <script src="script.js?v=10"></script>
+  <script src="js/storage.js?v=11"></script>
+  <script src="script.js?v=12"></script>
 </body>
 </html>

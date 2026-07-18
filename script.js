@@ -72,7 +72,7 @@ function initSettings() {
   }
   setText('hero-brand', settings.name);
   setText('hero-lead', settings.tagline);
-  if (settings.heroBadge) setHtml('hero-badge', `<i class="fas fa-star"></i> ${settings.heroBadge}`);
+  if (settings.heroBadge) setHtml('hero-badge', `<i class="fas fa-bolt"></i> ${settings.heroBadge}`);
   if (settings.heroStory && settings.heroStory.length) {
     const storyEl = document.getElementById('hero-story');
     if (storyEl) {
@@ -110,11 +110,12 @@ function initSettings() {
   }
 
   // WhatsApp links
-  const waUrl = `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent('Olá! Vi o site da ' + settings.name + ' e gostaria de fazer um pedido.')}`;
+  const waUrl = `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent('Olá! Vi o site da ' + settings.name + ' e quero fazer um pedido de bolo 🎂')}`;
   setHref('hero-whatsapp', waUrl);
   setHref('whatsapp-float', waUrl);
   setHref('contact-whatsapp', waUrl);
   setHref('footer-whatsapp', waUrl);
+  setHref('cta-band-whatsapp', waUrl);
   setText('contact-whatsapp', formatPhone(settings.whatsapp));
 
   // Instagram
@@ -274,16 +275,20 @@ function initProducts() {
     return categories.find(cat => cat.id === categoryId)?.name || 'Cardápio';
   }
 
-  function getPriceLabel(price) {
-    return Number(price) > 0 ? Storage.formatCurrency(price) : 'Consultar';
+  function getPriceLabel(product) {
+    const price = typeof product === 'object' ? product.price : product;
+    if (!(Number(price) > 0)) return 'Consultar';
+    const formatted = Storage.formatCurrency(price);
+    return (product && product.fromPrice) ? `A partir de ${formatted}` : formatted;
   }
 
   function getBadge(product) {
-    if (product.categoryId === 'cat3') return 'Pronta Entrega';
-    if (product.categoryId === 'cat4') return 'Bento Cake';
-    if (product.categoryId === 'cat5') return 'Destaque';
-    if (product.categoryId === 'cat6') return 'Kit Bento';
-    return product.featured ? 'Destaque' : '';
+    if (product.categoryId === 'cat3') return 'Hoje · 40 min';
+    if (product.categoryId === 'cat4') return 'Presente rápido';
+    if (product.categoryId === 'cat5') return 'Mais pedido';
+    if (product.categoryId === 'cat6') return 'Kit especial';
+    if (product.categoryId === 'cat1') return 'Sob encomenda';
+    return product.featured ? 'Favorito' : '';
   }
 
   function getImageClass() {
@@ -292,16 +297,28 @@ function initProducts() {
 
   function renderReadyDeliveryInfo() {
     return `
+      <div class="ready-delivery-banner reveal visible" data-category="cat3">
+        <div>
+          <strong><i class="fas fa-bolt"></i> Pronta entrega hoje</strong>
+          <p>Bolos do dia com retirada a partir de 40 minutos. Vagas limitadas.</p>
+        </div>
+        <a href="#" class="btn btn--primary btn--sm ready-delivery-banner__cta"><i class="fab fa-whatsapp"></i> Pedir para hoje</a>
+      </div>
       <div class="ready-delivery-info reveal visible" data-category="cat3">
         <article>
           <i class="fas fa-store"></i>
           <h4>Bolos do dia</h4>
-          <p>Pronta entrega diária. Consulte os recheios disponíveis.</p>
+          <p>Opções prontas para retirada no mesmo dia.</p>
         </article>
         <article>
           <i class="fas fa-clock"></i>
-          <h4>Retirada rápida</h4>
-          <p>Monte o seu com no mínimo 40 min de antecedência.</p>
+          <h4>40 minutos</h4>
+          <p>Peça com antecedência mínima e retire no balcão.</p>
+        </article>
+        <article>
+          <i class="fas fa-qrcode"></i>
+          <h4>PIX na hora</h4>
+          <p>Pagamento rápido e confirmação pelo WhatsApp.</p>
         </article>
       </div>
     `;
@@ -362,7 +379,7 @@ function initProducts() {
           <h3 class="product-card__name">${product.name}</h3>
           <p class="product-card__desc">${product.description}</p>
           <div class="product-card__footer">
-            <span class="product-card__price">${getPriceLabel(product.price)}</span>
+            <span class="product-card__price">${getPriceLabel(product)}</span>
             <a href="#" class="btn btn--primary btn--sm btn-pedir" data-product="${product.name}" data-price="${product.price}" data-category="${product.categoryId}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Pedir</a>
           </div>
         </div>
@@ -428,7 +445,12 @@ function initProducts() {
 
   const cards = grid.querySelectorAll('.product-card');
   const galleryCards = grid.querySelectorAll('.menu-gallery-card');
-  const groupTitles = grid.querySelectorAll('.products-group-title, .ready-delivery-info, .menu-gallery-showcase, .products-load-more');
+  const groupTitles = grid.querySelectorAll('.products-group-title, .ready-delivery-info, .ready-delivery-banner, .menu-gallery-showcase, .products-load-more');
+
+  const readyCta = grid.querySelector('.ready-delivery-banner__cta');
+  if (readyCta) {
+    readyCta.href = `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent('Olá! Quero um bolo de pronta entrega para retirar hoje.')}`;
+  }
 
   // Filtros de categoria
   orderedCategories.forEach(cat => {
@@ -651,8 +673,11 @@ function initFeatured() {
   const featured = Storage.getProducts().filter(p => p.featured);
 
   grid.innerHTML = featured.map((p, i) => {
-    const priceText = Number(p.price) > 0 ? ` — ${Storage.formatCurrency(p.price)}` : ' — consultar valor e disponibilidade';
-    const waMsg = encodeURIComponent(`Olá! Gostaria de pedir: ${p.name}${priceText}`);
+    const priceLabel = p.fromPrice && Number(p.price) > 0
+      ? `A partir de ${Storage.formatCurrency(p.price)}`
+      : (Number(p.price) > 0 ? Storage.formatCurrency(p.price) : 'Consultar');
+    const priceText = Number(p.price) > 0 ? ` — ${priceLabel}` : '';
+    const waMsg = encodeURIComponent(`Olá! Quero pedir: ${p.name}${priceText}`);
     const waLink = `https://wa.me/${settings.whatsapp}?text=${waMsg}`;
 
     return `
@@ -661,9 +686,9 @@ function initFeatured() {
           <img src="${p.image}" alt="${p.name}" decoding="async" width="160" height="200" loading="lazy" onerror="this.onerror=null;this.src='imagens/bolo1.jpg?v9';">
         </div>
         <div class="featured-card__body">
-          <span class="featured-card__rank">#${i + 1} Mais Vendido</span>
+          <span class="featured-card__rank">#${i + 1} Mais pedido</span>
           <h3 class="featured-card__name">${p.name}</h3>
-          <span class="featured-card__price">${Number(p.price) > 0 ? Storage.formatCurrency(p.price) : 'Consultar'}</span>
+          <span class="featured-card__price">${priceLabel}</span>
           <a href="${waLink}" class="btn btn--primary btn--sm" target="_blank" rel="noopener">
             <i class="fab fa-whatsapp"></i> Pedir
           </a>

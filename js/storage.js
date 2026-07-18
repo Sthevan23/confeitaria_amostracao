@@ -4,8 +4,8 @@
  */
 const Storage = (() => {
   const KEY = 'confeitaria_amostra_data';
-  const DATA_VERSION = 9;
-  const IMG_VER = 'v9';
+  const DATA_VERSION = 11;
+  const IMG_VER = 'v10';
 
   const img = (file) => `imagens/${file}?${IMG_VER}`;
 
@@ -51,7 +51,7 @@ const Storage = (() => {
   const defaultData = {
     settings: {
       name: 'Flor de Açúcar',
-      tagline: 'Doces feitos com tempo, técnica e afeto',
+      tagline: 'Encomenda ou pronta entrega — escolha o bolo e feche pelo WhatsApp em minutos.',
       logo: '',
       banner: IMG.hero,
       sobreImage: IMG.loja,
@@ -65,14 +65,14 @@ const Storage = (() => {
       followers: '2,4 mil',
       posts: '186',
       mapEmbed: 'https://www.google.com/maps?q=Belo+Horizonte,+MG&output=embed',
-      heroBadge: 'Confeitaria artesanal · Encomendas e pronta entrega',
+      heroBadge: 'Pronta entrega hoje · Retire em 40 min',
       heroStory: [
-        'A Flor de Açúcar nasceu da vontade de transformar ingredientes simples em momentos que as pessoas guardam na memória.',
-        'Cada bolo é pensado com calma: massa leve, recheio generoso e acabamento feito à mão.',
-        'Este site é um modelo pronto para personalizar com a identidade da sua confeitaria.'
+        'Cada bolo é feito sob encomenda: massa leve, recheio generoso e acabamento à mão.',
+        'Você escolhe o modelo, monta as opções e finaliza pelo WhatsApp — simples e rápido.',
+        'Ideal para aniversários, presentes, cafés e celebrações do dia a dia.'
       ],
-      sobreText1: 'A <strong>Flor de Açúcar</strong> é um modelo de site para confeitarias artesanais: cardápio, pedidos pelo WhatsApp e galeria de criações.',
-      sobreText2: 'Bolos personalizados, pronta entrega e kits especiais — tudo pensado para facilitar o pedido do cliente.'
+      sobreText1: 'A <strong>Flor de Açúcar</strong> faz bolos artesanais sob encomenda e com opções de pronta entrega. Do bento cake ao bolo de festa, tudo pensado para impressionar.',
+      sobreText2: 'Atendimento pelo WhatsApp, retirada no balcão e combinações de massa, recheio e tamanho do seu jeito.'
     },
     auth: {
       email: 'contato@flordeacucar.com.br',
@@ -87,28 +87,28 @@ const Storage = (() => {
       { id: 'cat6', name: 'Kits', slug: 'kits-bento' }
     ],
     products: [
-      { id: 'p1', name: 'Bolo de Casamento', description: 'Bolo elegante para casamentos, com acabamento limpo e flores.', price: 0, categoryId: 'cat1', image: IMG.bolo1, featured: true },
-      { id: 'p2', name: 'Bolo de Chocolate', description: 'Camadas de chocolate com cobertura cremosa e visual marcante.', price: 0, categoryId: 'cat1', image: IMG.bolo2, featured: true },
-      { id: 'p3', name: 'Bolo de Aniversário', description: 'Bolo festivo personalizado para comemorações especiais.', price: 0, categoryId: 'cat1', image: IMG.bolo3, featured: true },
-      { id: 'p4', name: 'Bolo com Frutas', description: 'Decoração com frutas frescas e creme suave.', price: 0, categoryId: 'cat1', image: IMG.bolo4, featured: false },
-      { id: 'p5', name: 'Bolo Floral', description: 'Acabamento delicado com flores e tons suaves.', price: 0, categoryId: 'cat1', image: IMG.bolo5, featured: false },
-      { id: 'p6', name: 'Bolo Naked Cake', description: 'Estilo rústico com camadas aparentes e frutas.', price: 0, categoryId: 'cat1', image: IMG.bolo6, featured: true },
-      { id: 'p19', name: 'Bolo Red Velvet', description: 'Clássico red velvet com cream cheese.', price: 0, categoryId: 'cat1', image: IMG.bolo7, featured: false },
-      { id: 'p20', name: 'Bolo Decorado Premium', description: 'Modelo especial para festas e ensaios.', price: 0, categoryId: 'cat1', image: IMG.bolo8, featured: false },
-      { id: 'p7', name: 'Bolo do Dia — Chocolate', description: 'Opção de pronta entrega com cobertura de chocolate.', price: 65, categoryId: 'cat3', image: IMG.pronto1, featured: false },
-      { id: 'p8', name: 'Bolo do Dia — Baunilha', description: 'Pronta entrega com cobertura clara e finalização suave.', price: 75, categoryId: 'cat3', image: IMG.pronto2, featured: false },
-      { id: 'p9', name: 'Bolo do Dia — Frutas', description: 'Pronta entrega com frutas e chantilly.', price: 95, categoryId: 'cat3', image: IMG.pronto3, featured: false },
-      { id: 'p21', name: 'Bolo do Dia — Brigadeiro', description: 'Pronta entrega com acabamento em chocolate.', price: 70, categoryId: 'cat3', image: IMG.pronto4, featured: false },
-      { id: 'p10', name: 'Bento Cake Frase', description: 'Mini bolo com frase personalizada no topo.', price: 40, categoryId: 'cat4', image: IMG.bento1, featured: false },
+      { id: 'p1', name: 'Bolo de Casamento', description: 'Elegante para casamentos, com acabamento limpo e flores.', price: 270, categoryId: 'cat1', image: IMG.bolo1, featured: true, fromPrice: true },
+      { id: 'p2', name: 'Bolo de Chocolate', description: 'Camadas de chocolate com cobertura cremosa e visual marcante.', price: 95, categoryId: 'cat1', image: IMG.bolo2, featured: true, fromPrice: true },
+      { id: 'p3', name: 'Bolo de Aniversário', description: 'Festivo e personalizado para comemorações especiais.', price: 95, categoryId: 'cat1', image: IMG.bolo3, featured: true, fromPrice: true },
+      { id: 'p4', name: 'Bolo com Frutas', description: 'Decoração com frutas frescas e creme suave.', price: 140, categoryId: 'cat1', image: IMG.bolo4, featured: false, fromPrice: true },
+      { id: 'p5', name: 'Bolo Floral', description: 'Acabamento delicado com flores e tons suaves.', price: 180, categoryId: 'cat1', image: IMG.bolo5, featured: false, fromPrice: true },
+      { id: 'p6', name: 'Bolo Naked Cake', description: 'Estilo rústico com camadas aparentes e frutas.', price: 160, categoryId: 'cat1', image: IMG.bolo6, featured: true, fromPrice: true },
+      { id: 'p19', name: 'Bolo Red Velvet', description: 'Clássico red velvet com cream cheese.', price: 150, categoryId: 'cat1', image: IMG.bolo7, featured: false, fromPrice: true },
+      { id: 'p20', name: 'Bolo Decorado Premium', description: 'Modelo especial para festas e ensaios.', price: 220, categoryId: 'cat1', image: IMG.bolo8, featured: false, fromPrice: true },
+      { id: 'p7', name: 'Bolo do Dia — Chocolate', description: 'Pronta entrega · retire hoje com 40 min de antecedência.', price: 65, categoryId: 'cat3', image: IMG.pronto1, featured: false },
+      { id: 'p8', name: 'Bolo do Dia — Baunilha', description: 'Pronta entrega · cobertura clara e finalização suave.', price: 75, categoryId: 'cat3', image: IMG.pronto2, featured: false },
+      { id: 'p9', name: 'Bolo do Dia — Frutas', description: 'Pronta entrega · frutas e chantilly.', price: 95, categoryId: 'cat3', image: IMG.pronto3, featured: false },
+      { id: 'p21', name: 'Bolo do Dia — Brigadeiro', description: 'Pronta entrega · acabamento em chocolate.', price: 70, categoryId: 'cat3', image: IMG.pronto4, featured: false },
+      { id: 'p10', name: 'Bento Cake Frase', description: 'Mini bolo com frase personalizada no topo — presente perfeito.', price: 40, categoryId: 'cat4', image: IMG.bento1, featured: false },
       { id: 'p11', name: 'Bento Cake Presente', description: 'Ideal para surpresas e datas especiais.', price: 40, categoryId: 'cat4', image: IMG.bento2, featured: false },
       { id: 'p22', name: 'Bento Cake Fofo', description: 'Mini bolo delicado para presentear.', price: 40, categoryId: 'cat4', image: IMG.bento3, featured: false },
-      { id: 'p23', name: 'Bento Cake Especial', description: 'Versão especial com decoração artesanal.', price: 40, categoryId: 'cat4', image: IMG.bento4, featured: false },
-      { id: 'p12', name: 'Bolo Colorido', description: 'Bolo festivo com camadas coloridas e cobertura cremosa.', price: 0, categoryId: 'cat2', image: IMG.doces1, featured: false },
-      { id: 'p13', name: 'Bolo de Frutas Vermelhas', description: 'Bolo elegante com morangos, framboesas e blueberries.', price: 0, categoryId: 'cat2', image: IMG.doces2, featured: false },
-      { id: 'p14', name: 'Bolo Destaque Jardim', description: 'Modelo premium com visual sofisticado.', price: 0, categoryId: 'cat5', image: IMG.destaque1, featured: false },
-      { id: 'p15', name: 'Bolo Destaque Celebração', description: 'Para mesas de festa e momentos especiais.', price: 0, categoryId: 'cat5', image: IMG.destaque2, featured: false },
-      { id: 'p24', name: 'Bolo Destaque Luxo', description: 'Acabamento elegante e presença marcante.', price: 0, categoryId: 'cat5', image: IMG.destaque3, featured: false },
-      { id: 'p25', name: 'Bolo Destaque Festa', description: 'Ideal para aniversários e comemorações.', price: 0, categoryId: 'cat5', image: IMG.destaque4, featured: false },
+      { id: 'p23', name: 'Bento Cake Especial', description: 'Versão especial com decoração artesanal.', price: 45, categoryId: 'cat4', image: IMG.bento4, featured: false },
+      { id: 'p12', name: 'Bolo Colorido', description: 'Bolo festivo com camadas coloridas e cobertura cremosa.', price: 120, categoryId: 'cat2', image: IMG.doces1, featured: false, fromPrice: true },
+      { id: 'p13', name: 'Bolo de Frutas Vermelhas', description: 'Elegante com morangos, framboesas e blueberries.', price: 160, categoryId: 'cat2', image: IMG.doces2, featured: false, fromPrice: true },
+      { id: 'p14', name: 'Bolo Destaque Jardim', description: 'Modelo premium com visual sofisticado.', price: 200, categoryId: 'cat5', image: IMG.destaque1, featured: false, fromPrice: true },
+      { id: 'p15', name: 'Bolo Destaque Celebração', description: 'Para mesas de festa e momentos especiais.', price: 190, categoryId: 'cat5', image: IMG.destaque2, featured: false, fromPrice: true },
+      { id: 'p24', name: 'Bolo Destaque Luxo', description: 'Acabamento elegante e presença marcante.', price: 240, categoryId: 'cat5', image: IMG.destaque3, featured: false, fromPrice: true },
+      { id: 'p25', name: 'Bolo Destaque Festa', description: 'Ideal para aniversários e comemorações.', price: 180, categoryId: 'cat5', image: IMG.destaque4, featured: false, fromPrice: true },
       { id: 'p16', name: 'Bento Cake na Marmita', description: 'Bento individual · aprox. 300g · 2 a 3 fatias.', price: 40, categoryId: 'cat6', image: IMG.bento1, featured: false },
       { id: 'p17', name: 'Kit 2 Bento Cakes', description: 'Dois mini bolos para presentear ou compartilhar.', price: 75, categoryId: 'cat6', image: IMG.bento2, featured: false },
       { id: 'p18', name: 'Kit Bento Especial', description: 'Bento cake especial com decoração artesanal.', price: 65, categoryId: 'cat6', image: IMG.bento3, featured: false }
@@ -125,17 +125,17 @@ const Storage = (() => {
       { id: 'o4', number: 'PED-2026-004', clientId: 'c1', clientName: 'Ana Paula Silva', items: [{ productId: 'p3', name: 'Bolo Nude Frutas', qty: 1, price: 199.90 }], total: 199.90, status: 'novo', date: '2026-07-07T09:00:00' }
     ],
     reviews: [
-      { id: 'r1', name: 'Juliana Ferreira', text: 'O bolo ficou lindo e o sabor impecável. Pedido pelo WhatsApp foi super fácil!', rating: 5, avatar: 'JF' },
+      { id: 'r1', name: 'Juliana Ferreira', text: 'O bolo ficou lindo e o sabor impecável. Pedi pelo WhatsApp e resolvi em minutos!', rating: 5, avatar: 'JF' },
       { id: 'r2', name: 'Roberto Almeida', text: 'Encomendei um temático para minha filha. Entrega no horário e acabamento perfeito.', rating: 5, avatar: 'RA' },
       { id: 'r3', name: 'Camila Santos', text: 'O bento cake com frase foi o presente mais fofo. Já virei cliente fiel.', rating: 5, avatar: 'CS' },
-      { id: 'r4', name: 'Fernando Lima', text: 'Pronta entrega deliciosa. Site organizado e fácil de montar o pedido.', rating: 5, avatar: 'FL' }
+      { id: 'r4', name: 'Fernando Lima', text: 'Precisei no mesmo dia: pronta entrega deliciosa e retirada rapidinha.', rating: 5, avatar: 'FL' }
     ],
     faq: [
-      { id: 'f1', question: 'Como faço meu pedido?', answer: 'Escolha o produto no cardápio, monte massa/recheio/tamanho e envie pelo WhatsApp. Confirmamos disponibilidade e prazo na hora.' },
-      { id: 'f2', question: 'Vocês têm pronta entrega?', answer: 'Sim. Há opções do dia e também a possibilidade de montar para retirar com antecedência mínima combinada no atendimento.' },
-      { id: 'f3', question: 'Fazem bolos personalizados?', answer: 'Sim. Criamos bolos temáticos e sob encomenda. Peça com antecedência para temas especiais.' },
-      { id: 'f4', question: 'Quais formas de pagamento?', answer: 'PIX, cartão e dinheiro. As opções são confirmadas no momento do pedido.' },
-      { id: 'f5', question: 'Onde vocês ficam?', answer: 'Rua das Flores, 120 — Centro. Atendemos por delivery e retirada — confirme disponibilidade pelo WhatsApp.' }
+      { id: 'f1', question: 'Como faço meu pedido?', answer: 'Escolha o bolo no cardápio, monte massa, recheio e tamanho e envie pelo WhatsApp. Confirmamos disponibilidade e prazo na hora.' },
+      { id: 'f2', question: 'Vocês têm pronta entrega?', answer: 'Sim! Temos bolos do dia. Para montar e retirar no mesmo dia, peça com no mínimo 40 minutos de antecedência.' },
+      { id: 'f3', question: 'Fazem bolos personalizados?', answer: 'Sim. Criamos bolos temáticos e sob encomenda. Para temas especiais, peça com antecedência.' },
+      { id: 'f4', question: 'Quais formas de pagamento?', answer: 'PIX, cartão e dinheiro. Confirmamos a forma de pagamento no WhatsApp ao fechar o pedido.' },
+      { id: 'f5', question: 'Qual o prazo e a retirada?', answer: 'Pronta entrega: a partir de 40 min. Encomendas: combinamos o prazo no atendimento. Retirada na Rua das Flores, 120 — Centro.' }
     ],
     gallery: [
       IMG.bolo1, IMG.bolo2, IMG.bolo3, IMG.bolo4, IMG.bolo5, IMG.bolo6, IMG.bolo7, IMG.bolo8,
@@ -224,6 +224,21 @@ const Storage = (() => {
       };
       data.products = defaultData.products;
       data.gallery = defaultData.gallery;
+    }
+    if ((data.version || 0) < 10) {
+      data.settings = { ...data.settings, ...defaultData.settings, banner: defaultData.settings.banner, sobreImage: defaultData.settings.sobreImage };
+      data.products = defaultData.products;
+      data.reviews = defaultData.reviews;
+      data.faq = defaultData.faq;
+      data.categories = defaultData.categories;
+      data.gallery = defaultData.gallery;
+    }
+    if ((data.version || 0) < 11) {
+      data.settings = {
+        ...data.settings,
+        banner: defaultData.settings.banner,
+        tagline: defaultData.settings.tagline
+      };
     }
     if ((data.version || 0) < DATA_VERSION) {
       data.version = DATA_VERSION;
