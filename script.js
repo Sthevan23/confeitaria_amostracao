@@ -1,12 +1,16 @@
 /**
- * script.js — Site principal (template Flor de Açúcar)
- * Interatividade, renderização dinâmica e animações
+ * script.js — Site Flor de Açúcar + pedidos no painel financeiro
  */
 
 forceStartAtTop();
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   forceStartAtTop();
+  try {
+    if (typeof Storage.initCloud === 'function') {
+      await Storage.initCloud({ full: false });
+    }
+  } catch (e) { /* local */ }
   initLoader();
   initSettings();
   initHeader();
@@ -637,33 +641,67 @@ function setupExtraMenu(settings) {
     });
   }
 
-  function updateExtraMenuLink() {
+  function getExtraMenuDetails() {
     const massa = getCheckedValues('extra-massa')[0] || 'Branca';
     const recheios = getCheckedValues('extra-recheio');
     const bombons = getCheckedValues('extra-bombom');
     const docinhos = getCheckedValues('extra-docinho');
-
-    const msg = encodeURIComponent(
-      `Olá! Vi as Opções para Encomenda no site da ${settings.name} e gostaria de fazer um pedido:\n` +
-      `Tamanho do bolo: ${getSelectedSizeText()}\n` +
-      `Massa: ${massa}\n` +
-      `Recheio(s): ${(recheios.length ? recheios : ['Brigadeiro']).join(' + ')}\n` +
-      `Bombons: ${bombons.length ? bombons.join(', ') : 'Não selecionado'}\n` +
-      `Docinhos: ${docinhos.length ? docinhos.join(', ') : 'Não selecionado'}`
-    );
-
-    menuWhatsapp.href = `https://wa.me/${settings.whatsapp}?text=${msg}`;
+    return {
+      massa,
+      recheios: recheios.length ? recheios : ['Brigadeiro'],
+      bombons,
+      docinhos,
+      sizeText: getSelectedSizeText()
+    };
   }
 
   section.addEventListener('change', (event) => {
     if (event.target.matches('input[name="extra-recheio"]')) {
       enforceExtraRecheioLimit();
     }
-    updateExtraMenuLink();
+  });
+
+  menuWhatsapp.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const nome = document.getElementById('menu-cliente-nome')?.value.trim() || '';
+    const sobrenome = document.getElementById('menu-cliente-sobrenome')?.value.trim() || '';
+    const whatsapp = (document.getElementById('menu-cliente-whatsapp')?.value || '').replace(/\D/g, '');
+    const error = validateCustomer(nome, sobrenome, whatsapp);
+    showCustomerError('menu-customer-error', error);
+    if (error) return;
+
+    const details = getExtraMenuDetails();
+    const fullName = `${nome} ${sobrenome}`.trim();
+    const summary =
+      `Encomenda personalizada | ${details.sizeText} | Massa ${details.massa} | Recheio ${details.recheios.join(' + ')}` +
+      (details.bombons.length ? ` | Bombons ${details.bombons.join(', ')}` : '') +
+      (details.docinhos.length ? ` | Docinhos ${details.docinhos.join(', ')}` : '');
+
+    const msg =
+      `Olá! Vi as Opções para Encomenda no site da ${settings.name} e gostaria de fazer um pedido:\n\n` +
+      `CLIENTE:\nNome: ${fullName}\nTelefone: ${whatsapp}\n\n` +
+      `Tamanho do bolo: ${details.sizeText}\n` +
+      `Massa: ${details.massa}\n` +
+      `Recheio(s): ${details.recheios.join(' + ')}\n` +
+      `Bombons: ${details.bombons.length ? details.bombons.join(', ') : 'Não selecionado'}\n` +
+      `Docinhos: ${details.docinhos.length ? details.docinhos.join(', ') : 'Não selecionado'}`;
+
+    menuWhatsapp.classList.add('is-loading');
+    try {
+      await Storage.createPublicOrder({
+        fullName,
+        whatsapp,
+        items: [{ productId: null, name: 'Encomenda personalizada', qty: 1, price: 0, detail: summary }],
+        total: 0,
+        notes: summary
+      });
+    } catch (err) { /* segue */ }
+
+    window.open(`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+    menuWhatsapp.classList.remove('is-loading');
   });
 
   enforceExtraRecheioLimit();
-  updateExtraMenuLink();
 }
 
 /* --- Destaques --- */
@@ -861,6 +899,10 @@ function initLightbox() {
   document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
   document.getElementById('lightbox-prev').addEventListener('click', () => navigateLightbox(-1));
   document.getElementById('lightbox-next').addEventListener('click', () => navigateLightbox(1));
+  document.getElementById('lightbox-order')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    submitLightboxOrder();
+  });
 
   document.getElementById('lightbox').addEventListener('click', (e) => {
     if (e.target.id === 'lightbox') closeLightbox();
@@ -1037,9 +1079,37 @@ function getPublicAssetUrl(path) {
   }
 }
 
+function getCustomerFromLightbox() {
+  const nome = document.getElementById('order-cliente-nome')?.value.trim() || '';
+  const sobrenome = document.getElementById('order-cliente-sobrenome')?.value.trim() || '';
+  const whatsapp = (document.getElementById('order-cliente-whatsapp')?.value || '').replace(/\D/g, '');
+  return { nome, sobrenome, whatsapp, fullName: `${nome} ${sobrenome}`.trim() };
+}
+
+function showCustomerError(elId, message) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.hidden = !message;
+  el.textContent = message || '';
+}
+
+function validateCustomer(nome, sobrenome, whatsapp) {
+  if (!nome) return 'Informe seu nome.';
+  if (!sobrenome) return 'Informe seu sobrenome.';
+  if (!whatsapp || whatsapp.length < 10) return 'Informe um telefone válido com DDD.';
+  return '';
+}
+
 function updateOrderLink() {
   if (!currentOrderProduct) return;
+  const size = getSelectedSize();
+  const isKitBento = isFixedBentoKit();
+  const price = isKitBento ? currentOrderProduct.price : size?.price || currentOrderProduct.price || 0;
+  const priceText = Number(price) > 0 ? Storage.formatCurrency(price) : 'Consultar';
+  document.getElementById('lightbox-price').textContent = priceText;
+}
 
+function buildLightboxOrderPayload() {
   const settings = Storage.getSettings();
   const massa = document.getElementById('order-massa')?.value || 'Branca';
   const sabores = getSelectedFlavors();
@@ -1048,6 +1118,7 @@ function updateOrderLink() {
   const price = isKitBento ? currentOrderProduct.price : size?.price || currentOrderProduct.price || 0;
   const priceText = Number(price) > 0 ? Storage.formatCurrency(price) : 'Consultar';
   const frase = document.getElementById('order-frase')?.value.trim() || '';
+  const customer = getCustomerFromLightbox();
   const readyDeliveryText = currentOrderProduct.categoryName === 'Pronta Entrega'
     ? '\nConsulte a disponibilidade dos recheios de pronta entrega. Para montar e retirar no mesmo dia, pedido com no mínimo 40 min de antecedência.'
     : '';
@@ -1056,13 +1127,20 @@ function updateOrderLink() {
     : '';
   const imageUrl = getPublicAssetUrl(currentOrderProduct.image);
   const imageText = imageUrl ? `\nFoto/modelo escolhido:\n${imageUrl}` : '';
+  const itemName = currentOrderProduct.name;
+  const itemDetail = [
+    isKitBento ? currentOrderProduct.name : (size?.label || 'A combinar'),
+    `Massa: ${massa}`,
+    `Recheio: ${sabores.join(' + ')}`
+  ].join(' | ');
 
-  document.getElementById('lightbox-price').textContent = priceText;
-
-  const waMsg = encodeURIComponent(
+  const waMsg =
     `PEDIDO RECEBIDO - ${settings.name.toUpperCase()}\n\n` +
+    `CLIENTE:\n` +
+    `Nome: ${customer.fullName}\n` +
+    `Telefone: ${customer.whatsapp}\n\n` +
     `ITENS DO PEDIDO:\n\n` +
-    `* ITEM: ${currentOrderProduct.name}\n` +
+    `* ITEM: ${itemName}\n` +
     `  Tamanho/modelo: ${isKitBento ? currentOrderProduct.name : size?.label || 'A combinar'}\n` +
     `  Fatias/detalhes: ${isKitBento ? 'Modelo com valor fixo' : size?.detail || 'A combinar'}\n` +
     `  Massa: ${massa}\n` +
@@ -1076,10 +1154,50 @@ function updateOrderLink() {
     `--------------------------------\n\n` +
     `${readyDeliveryText ? `OBSERVAÇÕES:\n${readyDeliveryText}\n\n` : ''}` +
     `Aguardo confirmação de disponibilidade e pagamento.\n\n` +
-    `Obrigado!`
-  );
+    `Obrigado!`;
 
-  document.getElementById('lightbox-order').href = `https://wa.me/${settings.whatsapp}?text=${waMsg}`;
+  return {
+    customer,
+    waMsg,
+    price,
+    items: [{
+      productId: currentOrderProduct.id || null,
+      name: itemName,
+      qty: 1,
+      price: Number(price) || 0,
+      detail: itemDetail
+    }],
+    notes: [phraseText, readyDeliveryText].filter(Boolean).join(' ').trim()
+  };
+}
+
+async function submitLightboxOrder() {
+  if (!currentOrderProduct) return;
+
+  const payload = buildLightboxOrderPayload();
+  const error = validateCustomer(payload.customer.nome, payload.customer.sobrenome, payload.customer.whatsapp);
+  showCustomerError('order-customer-error', error);
+  if (error) return;
+
+  const btn = document.getElementById('lightbox-order');
+  btn.classList.add('is-loading');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+  try {
+    await Storage.createPublicOrder({
+      fullName: payload.customer.fullName,
+      whatsapp: payload.customer.whatsapp,
+      items: payload.items,
+      total: payload.price,
+      notes: payload.notes
+    });
+  } catch (e) { /* segue */ }
+
+  const settings = Storage.getSettings();
+  window.open(`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(payload.waMsg)}`, '_blank', 'noopener');
+
+  btn.classList.remove('is-loading');
+  btn.innerHTML = '<i class="fab fa-whatsapp"></i> Confirmar pedido no WhatsApp';
 }
 
 function openProductConfigurator(product, fallbackImage = '', shouldOpen = true, showNavigation = false) {

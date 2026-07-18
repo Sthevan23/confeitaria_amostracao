@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="style.css?v=21">
 </head>
 <body>
 
@@ -251,6 +251,25 @@
             </article>
           </div>
 
+          <div class="customer-fields customer-fields--menu">
+            <p class="customer-fields__title">Seus dados (obrigatório)</p>
+            <div class="customer-fields__row">
+              <label class="order-field">
+                Nome
+                <input type="text" id="menu-cliente-nome" placeholder="Seu nome" required autocomplete="given-name">
+              </label>
+              <label class="order-field">
+                Sobrenome
+                <input type="text" id="menu-cliente-sobrenome" placeholder="Seu sobrenome" required autocomplete="family-name">
+              </label>
+            </div>
+            <label class="order-field">
+              WhatsApp
+              <input type="tel" id="menu-cliente-whatsapp" placeholder="DDD + número" required autocomplete="tel" inputmode="tel">
+            </label>
+            <p class="customer-fields__hint" id="menu-customer-error" hidden></p>
+          </div>
+
           <a href="#" class="btn btn--primary btn--lg cardapio-extra__cta" id="menu-whatsapp">
             <i class="fab fa-whatsapp"></i> Encomendar pelo WhatsApp
           </a>
@@ -328,9 +347,28 @@
               <textarea id="order-frase" rows="3" maxlength="90" placeholder="Digite a frase que você quer no Bento Cake"></textarea>
               <small>Exemplo: Feliz aniversário, te amo!</small>
             </label>
+
+            <div class="customer-fields">
+              <p class="customer-fields__title">Seus dados (obrigatório)</p>
+              <div class="customer-fields__row">
+                <label class="order-field">
+                  Nome
+                  <input type="text" id="order-cliente-nome" placeholder="Nome" required autocomplete="given-name">
+                </label>
+                <label class="order-field">
+                  Sobrenome
+                  <input type="text" id="order-cliente-sobrenome" placeholder="Sobrenome" required autocomplete="family-name">
+                </label>
+              </div>
+              <label class="order-field">
+                WhatsApp
+                <input type="tel" id="order-cliente-whatsapp" placeholder="DDD + número" required autocomplete="tel" inputmode="tel">
+              </label>
+            </div>
+            <p class="customer-fields__hint" id="order-customer-error" hidden></p>
           </form>
 
-          <a href="#" class="btn btn--primary btn--full" id="lightbox-order" target="_blank" rel="noopener">
+          <a href="#" class="btn btn--primary btn--full" id="lightbox-order">
             <i class="fab fa-whatsapp"></i> Confirmar pedido no WhatsApp
           </a>
         </div>
@@ -507,7 +545,7 @@
       </div>
 
       <div class="footer__bottom">
-        <p>&copy; <span id="footer-year"></span> <span id="footer-name">Flor de Açúcar</span>. Todos os direitos reservados.</p>
+        <p>&copy; <span id="footer-year"></span> <span id="footer-name">Flor de Açúcar</span>. Todos os direitos reservados. · <a href="admin/login.html">Área admin</a></p>
       </div>
     </div>
   </footer>
@@ -523,7 +561,7 @@
 
   <a href="#" id="hero-instagram" class="visually-hidden" target="_blank" rel="noopener">Instagram</a>
 
-  <script src="js/storage.js?v=11"></script>
-  <script src="script.js?v=12"></script>
+  <script src="js/storage.js?v=21"></script>
+  <script src="script.js?v=21"></script>
 </body>
 </html>

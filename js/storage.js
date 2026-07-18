@@ -1,11 +1,26 @@
-/**
- * storage.js — Dados do template (LocalStorage)
- * Dados do site de amostra (LocalStorage).
+﻿/**
+ * storage.js — Demo Flor de Açúcar + painel financeiro
+ * LocalStorage + sincronização opcional (api/data.php)
  */
 const Storage = (() => {
-  const KEY = 'confeitaria_amostra_data';
-  const DATA_VERSION = 11;
+  const KEY = 'confeitaria_demo_financeiro';
+  const DATA_VERSION = 1;
   const IMG_VER = 'v10';
+
+  const API = (() => {
+    const path = window.location.pathname || '';
+    if (path.includes('/admin/')) {
+      return path.replace(/\/admin\/.*$/, '/api/data.php');
+    }
+    if (path.endsWith('/')) {
+      return path + 'api/data.php';
+    }
+    return path.replace(/\/[^/]*$/, '/api/data.php');
+  })();
+
+  let cloudEnabled = false;
+  let lastRemoteJson = '';
+  let pollTimer = null;
 
   const img = (file) => `imagens/${file}?${IMG_VER}`;
 
@@ -116,13 +131,30 @@ const Storage = (() => {
     clients: [
       { id: 'c1', name: 'Ana Paula Silva', email: 'ana@email.com', phone: '31987654321', address: 'Centro' },
       { id: 'c2', name: 'Carlos Mendes', email: 'carlos@email.com', phone: '31976543210', address: 'Savassi' },
-      { id: 'c3', name: 'Mariana Costa', email: 'mariana@email.com', phone: '31965432109', address: 'Funcionários' }
+      { id: 'c3', name: 'Mariana Costa', email: 'mariana@email.com', phone: '31965432109', address: 'Funcionários' },
+      { id: 'c4', name: 'Pedro Alves', email: 'pedro@email.com', phone: '31954321098', address: 'Lourdes' },
+      { id: 'c5', name: 'Fernanda Rocha', email: 'fernanda@email.com', phone: '31943210987', address: 'Pampulha' }
     ],
     orders: [
-      { id: 'o1', number: 'PED-2026-001', clientId: 'c1', clientName: 'Ana Paula Silva', items: [{ productId: 'p1', name: 'Bolo Floral Champagne', qty: 1, price: 189.90 }], total: 189.90, status: 'finalizado', date: '2026-07-01T14:30:00' },
-      { id: 'o2', number: 'PED-2026-002', clientId: 'c2', clientName: 'Carlos Mendes', items: [{ productId: 'p10', name: 'Bento Cake Frase', qty: 2, price: 40.00 }, { productId: 'p12', name: 'Caixa de Brigadeiros', qty: 1, price: 55.00 }], total: 135.00, status: 'preparo', date: '2026-07-05T10:15:00' },
-      { id: 'o3', number: 'PED-2026-003', clientId: 'c3', clientName: 'Mariana Costa', items: [{ productId: 'p7', name: 'Bolo do Dia — Chocolate', qty: 1, price: 65.00 }], total: 65.00, status: 'entrega', date: '2026-07-06T16:00:00' },
-      { id: 'o4', number: 'PED-2026-004', clientId: 'c1', clientName: 'Ana Paula Silva', items: [{ productId: 'p3', name: 'Bolo Nude Frutas', qty: 1, price: 199.90 }], total: 199.90, status: 'novo', date: '2026-07-07T09:00:00' }
+      { id: 'o1', number: 'PED-2026-001', clientId: 'c1', clientName: 'Ana Paula Silva', clientWhatsapp: '31987654321', items: [{ productId: 'p2', name: 'Bolo de Chocolate', qty: 1, price: 95 }], total: 95, status: 'finalizado', date: '2026-02-12T14:30:00', notes: '', source: 'demo' },
+      { id: 'o2', number: 'PED-2026-002', clientId: 'c2', clientName: 'Carlos Mendes', clientWhatsapp: '31976543210', items: [{ productId: 'p10', name: 'Bento Cake Frase', qty: 2, price: 40 }], total: 80, status: 'finalizado', date: '2026-02-20T11:00:00', notes: '', source: 'demo' },
+      { id: 'o3', number: 'PED-2026-003', clientId: 'c3', clientName: 'Mariana Costa', clientWhatsapp: '31965432109', items: [{ productId: 'p7', name: 'Bolo do Dia — Chocolate', qty: 1, price: 65 }, { productId: 'p16', name: 'Bento Cake na Marmita', qty: 1, price: 40 }], total: 105, status: 'finalizado', date: '2026-03-05T16:00:00', notes: '', source: 'demo' },
+      { id: 'o4', number: 'PED-2026-004', clientId: 'c4', clientName: 'Pedro Alves', clientWhatsapp: '31954321098', items: [{ productId: 'p1', name: 'Bolo de Casamento', qty: 1, price: 270 }], total: 270, status: 'finalizado', date: '2026-03-18T10:00:00', notes: '', source: 'demo' },
+      { id: 'o5', number: 'PED-2026-005', clientId: 'c5', clientName: 'Fernanda Rocha', clientWhatsapp: '31943210987', items: [{ productId: 'p3', name: 'Bolo de Aniversário', qty: 1, price: 95 }], total: 95, status: 'finalizado', date: '2026-04-08T15:00:00', notes: '', source: 'demo' },
+      { id: 'o6', number: 'PED-2026-006', clientId: 'c1', clientName: 'Ana Paula Silva', clientWhatsapp: '31987654321', items: [{ productId: 'p14', name: 'Bolo Destaque Jardim', qty: 1, price: 200 }], total: 200, status: 'finalizado', date: '2026-04-22T12:00:00', notes: '', source: 'demo' },
+      { id: 'o7', number: 'PED-2026-007', clientId: 'c2', clientName: 'Carlos Mendes', clientWhatsapp: '31976543210', items: [{ productId: 'p11', name: 'Bento Cake Presente', qty: 3, price: 40 }], total: 120, status: 'finalizado', date: '2026-05-03T09:30:00', notes: '', source: 'demo' },
+      { id: 'o8', number: 'PED-2026-008', clientId: 'c3', clientName: 'Mariana Costa', clientWhatsapp: '31965432109', items: [{ productId: 'p6', name: 'Bolo Naked Cake', qty: 1, price: 160 }], total: 160, status: 'finalizado', date: '2026-05-15T14:00:00', notes: '', source: 'demo' },
+      { id: 'o9', number: 'PED-2026-009', clientId: 'c4', clientName: 'Pedro Alves', clientWhatsapp: '31954321098', items: [{ productId: 'p8', name: 'Bolo do Dia — Baunilha', qty: 2, price: 75 }], total: 150, status: 'finalizado', date: '2026-05-28T17:00:00', notes: '', source: 'demo' },
+      { id: 'o10', number: 'PED-2026-010', clientId: 'c5', clientName: 'Fernanda Rocha', clientWhatsapp: '31943210987', items: [{ productId: 'p5', name: 'Bolo Floral', qty: 1, price: 180 }], total: 180, status: 'finalizado', date: '2026-06-06T11:00:00', notes: '', source: 'demo' },
+      { id: 'o11', number: 'PED-2026-011', clientId: 'c1', clientName: 'Ana Paula Silva', clientWhatsapp: '31987654321', items: [{ productId: 'p17', name: 'Kit 2 Bento Cakes', qty: 1, price: 75 }, { productId: 'p10', name: 'Bento Cake Frase', qty: 1, price: 40 }], total: 115, status: 'finalizado', date: '2026-06-14T13:00:00', notes: '', source: 'demo' },
+      { id: 'o12', number: 'PED-2026-012', clientId: 'c2', clientName: 'Carlos Mendes', clientWhatsapp: '31976543210', items: [{ productId: 'p20', name: 'Bolo Decorado Premium', qty: 1, price: 220 }], total: 220, status: 'finalizado', date: '2026-06-25T16:30:00', notes: '', source: 'demo' },
+      { id: 'o13', number: 'PED-2026-013', clientId: 'c3', clientName: 'Mariana Costa', clientWhatsapp: '31965432109', items: [{ productId: 'p7', name: 'Bolo do Dia — Chocolate', qty: 1, price: 65 }], total: 65, status: 'finalizado', date: '2026-07-02T10:00:00', notes: '', source: 'demo' },
+      { id: 'o14', number: 'PED-2026-014', clientId: 'c4', clientName: 'Pedro Alves', clientWhatsapp: '31954321098', items: [{ productId: 'p2', name: 'Bolo de Chocolate', qty: 1, price: 95 }, { productId: 'p22', name: 'Bento Cake Fofo', qty: 2, price: 40 }], total: 175, status: 'finalizado', date: '2026-07-10T15:00:00', notes: '', source: 'demo' },
+      { id: 'o15', number: 'PED-2026-015', clientId: 'c5', clientName: 'Fernanda Rocha', clientWhatsapp: '31943210987', items: [{ productId: 'p15', name: 'Bolo Destaque Celebração', qty: 1, price: 190 }], total: 190, status: 'finalizado', date: '2026-07-15T12:00:00', notes: '', source: 'demo' },
+      { id: 'o16', number: 'PED-2026-016', clientId: 'c1', clientName: 'Ana Paula Silva', clientWhatsapp: '31987654321', items: [{ productId: 'p9', name: 'Bolo do Dia — Frutas', qty: 1, price: 95 }], total: 95, status: 'finalizado', date: '2026-07-18T09:00:00', notes: '', source: 'demo' },
+      { id: 'o17', number: 'PED-2026-017', clientId: 'c2', clientName: 'Carlos Mendes', clientWhatsapp: '31976543210', items: [{ productId: 'p10', name: 'Bento Cake Frase', qty: 2, price: 40 }], total: 80, status: 'preparo', date: '2026-07-16T10:15:00', notes: '', source: 'demo' },
+      { id: 'o18', number: 'PED-2026-018', clientId: 'c3', clientName: 'Mariana Costa', clientWhatsapp: '31965432109', items: [{ productId: 'p7', name: 'Bolo do Dia — Chocolate', qty: 1, price: 65 }], total: 65, status: 'entrega', date: '2026-07-17T16:00:00', notes: '', source: 'demo' },
+      { id: 'o19', number: 'PED-2026-019', clientId: 'c1', clientName: 'Ana Paula Silva', clientWhatsapp: '31987654321', items: [{ productId: 'p3', name: 'Bolo de Aniversário', qty: 1, price: 95 }], total: 95, status: 'novo', date: '2026-07-18T08:30:00', notes: '', source: 'demo' }
     ],
     reviews: [
       { id: 'r1', name: 'Juliana Ferreira', text: 'O bolo ficou lindo e o sabor impecável. Pedi pelo WhatsApp e resolvi em minutos!', rating: 5, avatar: 'JF' },
@@ -153,99 +185,21 @@ const Storage = (() => {
       localStorage.setItem(KEY, JSON.stringify({ ...defaultData, version: DATA_VERSION }));
       return;
     }
-
     const data = JSON.parse(localStorage.getItem(KEY));
-    if ((data.version || 0) < 2) {
-      data.settings = {
-        ...data.settings,
-        sobreText1: defaultData.settings.sobreText1,
-        sobreText2: defaultData.settings.sobreText2
-      };
-      data.faq = defaultData.faq;
-    }
-    if ((data.version || 0) < 3) {
+    if ((data.version || 0) < DATA_VERSION) {
+      data.settings = { ...defaultData.settings, ...(data.settings || {}) };
+      data.products = defaultData.products;
       data.categories = defaultData.categories;
-    }
-    if ((data.version || 0) < 4) {
-      data.settings = {
-        ...data.settings,
-        banner: defaultData.settings.banner,
-        sobreImage: defaultData.settings.sobreImage
-      };
-      data.products = defaultData.products;
       data.gallery = defaultData.gallery;
-    }
-    if ((data.version || 0) < 5) {
-      data.settings = {
-        ...data.settings,
-        banner: defaultData.settings.banner,
-        sobreImage: defaultData.settings.sobreImage
-      };
-      data.products = defaultData.products;
-      data.gallery = defaultData.gallery;
-    }
-    if ((data.version || 0) < 6) {
-      data.settings = {
-        ...data.settings,
-        banner: defaultData.settings.banner,
-        sobreImage: defaultData.settings.sobreImage
-      };
-      data.products = defaultData.products;
-      data.gallery = defaultData.gallery;
-    }
-    if ((data.version || 0) < 7) {
-      // Garante fotos locais (corrige cache antigo com Unsplash/vazio)
-      data.settings = {
-        ...data.settings,
-        banner: defaultData.settings.banner,
-        sobreImage: defaultData.settings.sobreImage,
-        logo: data.settings.logo && String(data.settings.logo).startsWith('imagens/')
-          ? data.settings.logo
-          : ''
-      };
-      data.products = defaultData.products;
-      data.gallery = defaultData.gallery;
-    }
-    if ((data.version || 0) < 8) {
-      data.settings = {
-        ...data.settings,
-        banner: defaultData.settings.banner,
-        sobreImage: defaultData.settings.sobreImage
-      };
-      data.products = defaultData.products;
-      data.gallery = defaultData.gallery;
-    }
-    if ((data.version || 0) < 9) {
-      data.categories = defaultData.categories;
-      data.settings = {
-        ...data.settings,
-        banner: defaultData.settings.banner,
-        sobreImage: defaultData.settings.sobreImage
-      };
-      data.products = defaultData.products;
-      data.gallery = defaultData.gallery;
-    }
-    if ((data.version || 0) < 10) {
-      data.settings = { ...data.settings, ...defaultData.settings, banner: defaultData.settings.banner, sobreImage: defaultData.settings.sobreImage };
-      data.products = defaultData.products;
       data.reviews = defaultData.reviews;
       data.faq = defaultData.faq;
-      data.categories = defaultData.categories;
-      data.gallery = defaultData.gallery;
-    }
-    if ((data.version || 0) < 11) {
-      data.settings = {
-        ...data.settings,
-        banner: defaultData.settings.banner,
-        tagline: defaultData.settings.tagline
-      };
-    }
-    if ((data.version || 0) < DATA_VERSION) {
+      if (!data.orders || !data.orders.length) data.orders = defaultData.orders;
+      if (!data.clients || !data.clients.length) data.clients = defaultData.clients;
+      data.auth = data.auth || defaultData.auth;
       data.version = DATA_VERSION;
       localStorage.setItem(KEY, JSON.stringify(data));
     }
   }
-
   function getAll() {
     init();
     return JSON.parse(localStorage.getItem(KEY));
@@ -253,6 +207,196 @@ const Storage = (() => {
 
   function save(data) {
     localStorage.setItem(KEY, JSON.stringify(data));
+    pushToCloud(data);
+  }
+
+  function getAdminPassword() {
+    return sessionStorage.getItem('admin_password') || '';
+  }
+
+  function setAdminPassword(password) {
+    if (password) sessionStorage.setItem('admin_password', password);
+    else sessionStorage.removeItem('admin_password');
+  }
+
+  function isCloudEnabled() {
+    return cloudEnabled;
+  }
+
+  function notifyUpdated() {
+    window.dispatchEvent(new CustomEvent('storage-updated'));
+  }
+
+  async function fetchWithTimeout(url, options = {}, ms = 2500) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    try {
+      return await fetch(url, { ...options, signal: controller.signal, cache: 'no-store' });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  async function probeCloud() {
+    if (location.protocol === 'file:') {
+      cloudEnabled = false;
+      return false;
+    }
+    try {
+      const res = await fetchWithTimeout(API + '?ping=' + Date.now());
+      const type = (res.headers.get('content-type') || '').toLowerCase();
+      cloudEnabled = res.ok && type.includes('json');
+      return cloudEnabled;
+    } catch (e) {
+      cloudEnabled = false;
+      return false;
+    }
+  }
+
+  async function pullPublic() {
+    if (!(await probeCloud())) return false;
+    try {
+      const res = await fetchWithTimeout(API + '?t=' + Date.now());
+      if (!res.ok) return false;
+      const remote = await res.json();
+      if (remote.empty) return false;
+
+      const local = getAll();
+      const merged = {
+        ...local,
+        version: remote.version || local.version,
+        settings: remote.settings || local.settings,
+        categories: remote.categories || local.categories,
+        products: remote.products || local.products,
+        reviews: remote.reviews || local.reviews,
+        faq: remote.faq || local.faq,
+        gallery: remote.gallery || local.gallery
+      };
+      localStorage.setItem(KEY, JSON.stringify(merged));
+      lastRemoteJson = JSON.stringify(merged);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function pullFull() {
+    const password = getAdminPassword();
+    if (!password || !(await probeCloud())) return false;
+    try {
+      const res = await fetchWithTimeout(API + '?full=1&t=' + Date.now(), {
+        headers: { 'X-Admin-Password': password }
+      });
+      if (!res.ok) return false;
+      const remote = await res.json();
+      if (!remote || !remote.settings) return false;
+      const json = JSON.stringify(remote);
+      if (json === lastRemoteJson) return true;
+      localStorage.setItem(KEY, json);
+      lastRemoteJson = json;
+      notifyUpdated();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function pushToCloud(data) {
+    if (location.protocol === 'file:') return false;
+    const password = getAdminPassword() || (data.auth && data.auth.password) || '';
+    if (!password) return false;
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': password
+        },
+        body: JSON.stringify({ data })
+      });
+      if (res.ok) {
+        lastRemoteJson = JSON.stringify(data);
+        cloudEnabled = true;
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function loginRemote(email, password) {
+    if (!(await probeCloud())) {
+      // Offline / local: usa senha local
+      const ok = loginLocal(email, password);
+      if (ok) setAdminPassword(password);
+      return ok;
+    }
+
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'login', email, password })
+      });
+      const result = await res.json();
+
+      if (res.status === 404) {
+        // Servidor ainda sem dados: tenta local e faz upload inicial
+        if (loginLocal(email, password)) {
+          setAdminPassword(password);
+          await pushToCloud(getAll());
+          return true;
+        }
+        return false;
+      }
+
+      if (!res.ok || !result.ok) return false;
+
+      localStorage.setItem(KEY, JSON.stringify(result.data));
+      lastRemoteJson = JSON.stringify(result.data);
+      setAdminPassword(password);
+      cloudEnabled = true;
+      return true;
+    } catch (e) {
+      if (loginLocal(email, password)) {
+        setAdminPassword(password);
+        return true;
+      }
+      return false;
+    }
+  }
+
+  function loginLocal(email, password) {
+    const { auth } = getAll();
+    return auth.email === email && auth.password === password;
+  }
+
+  function startCloudPolling(intervalMs = 5000) {
+    stopCloudPolling();
+    if (!getAdminPassword()) return;
+    pollTimer = setInterval(() => {
+      pullFull();
+    }, intervalMs);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') pullFull();
+    });
+  }
+
+  function stopCloudPolling() {
+    if (pollTimer) {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  }
+
+  async function initCloud({ full = false } = {}) {
+    init();
+    const ok = full ? await pullFull() : await pullPublic();
+    if (!ok && full && getAdminPassword()) {
+      await pushToCloud(getAll());
+    }
+    return cloudEnabled;
   }
 
   function getSettings() { return getAll().settings; }
@@ -295,14 +439,20 @@ const Storage = (() => {
   function getGallery() { return getAll().gallery; }
 
   function login(email, password) {
-    const { auth } = getAll();
-    return auth.email === email && auth.password === password;
+    return loginLocal(email, password);
   }
 
-  function updatePassword(newPassword) {
+  async function loginAsync(email, password) {
+    return loginRemote(email, password);
+  }
+
+  function updatePassword(currentPassword, newPassword) {
     const data = getAll();
+    if (data.auth.password !== currentPassword) return false;
     data.auth.password = newPassword;
     save(data);
+    setAdminPassword(newPassword);
+    return true;
   }
 
   function generateId(prefix) {
@@ -329,10 +479,16 @@ const Storage = (() => {
     const orders = getOrders();
     const finished = orders.filter(o => o.status === 'finalizado');
     const totalSales = finished.reduce((sum, o) => sum + o.total, 0);
+
     const today = new Date().toISOString().split('T')[0];
-    const todaySales = finished.filter(o => o.date.startsWith(today)).reduce((sum, o) => sum + o.total, 0);
+    const todaySales = finished
+      .filter(o => o.date.startsWith(today))
+      .reduce((sum, o) => sum + o.total, 0);
+
     const month = new Date().toISOString().slice(0, 7);
-    const monthSales = finished.filter(o => o.date.startsWith(month)).reduce((sum, o) => sum + o.total, 0);
+    const monthSales = finished
+      .filter(o => o.date.startsWith(month))
+      .reduce((sum, o) => sum + o.total, 0);
 
     return {
       totalOrders: orders.length,
@@ -364,6 +520,131 @@ const Storage = (() => {
     return Object.values(months);
   }
 
+  /** Pedidos finalizados filtrados por perÃ­odo: all | today | month */
+  function getFinishedOrdersByPeriod(period = 'all') {
+    const finished = getOrders().filter(o => o.status === 'finalizado');
+    if (period === 'today') {
+      const today = new Date().toISOString().split('T')[0];
+      return finished.filter(o => o.date.startsWith(today));
+    }
+    if (period === 'month') {
+      const month = new Date().toISOString().slice(0, 7);
+      return finished.filter(o => o.date.startsWith(month));
+    }
+    return finished;
+  }
+
+  /**
+   * Agrega bolos/produtos vendidos a partir de pedidos finalizados.
+   * Retorna lista ordenada por faturamento (maior primeiro).
+   */
+  function getProductSalesBreakdown(period = 'all') {
+    const orders = getFinishedOrdersByPeriod(period);
+    const map = {};
+
+    orders.forEach(order => {
+      (order.items || []).forEach(item => {
+        const key = item.productId || item.name;
+        if (!map[key]) {
+          map[key] = {
+            productId: item.productId || null,
+            name: item.name || 'Produto',
+            qty: 0,
+            revenue: 0
+          };
+        }
+        const qty = Number(item.qty) || 0;
+        const price = Number(item.price) || 0;
+        map[key].qty += qty;
+        map[key].revenue += qty * price;
+        map[key].name = item.name || map[key].name;
+      });
+    });
+
+    return Object.values(map)
+      .map(row => ({
+        ...row,
+        avgPrice: row.qty > 0 ? row.revenue / row.qty : 0
+      }))
+      .sort((a, b) => b.revenue - a.revenue);
+  }
+
+  function getSalesPeriodStats(period = 'all') {
+    const orders = getFinishedOrdersByPeriod(period);
+    const breakdown = getProductSalesBreakdown(period);
+    return {
+      orderCount: orders.length,
+      totalRevenue: orders.reduce((sum, o) => sum + (Number(o.total) || 0), 0),
+      cakesSold: breakdown.reduce((sum, row) => sum + row.qty, 0),
+      products: breakdown
+    };
+  }
+
+  /** Pedido vindo do site pÃºblico (cliente preenche nome + WhatsApp) */
+  async function createPublicOrder({ fullName, whatsapp, items, total, notes }) {
+    const phone = String(whatsapp || '').replace(/\D/g, '');
+    const name = String(fullName || '').trim();
+    if (!name || phone.length < 10 || !items || !items.length) {
+      return { ok: false, error: 'Dados incompletos' };
+    }
+
+    const data = getAll();
+    let client = (data.clients || []).find(c => String(c.phone || '').replace(/\D/g, '') === phone);
+    if (!client) {
+      client = {
+        id: generateId('c'),
+        name,
+        email: '',
+        phone,
+        address: ''
+      };
+      data.clients = data.clients || [];
+      data.clients.push(client);
+    } else {
+      client.name = name;
+      client.phone = phone;
+    }
+
+    const year = new Date().getFullYear();
+    const num = String((data.orders || []).length + 1).padStart(3, '0');
+    const order = {
+      id: generateId('o'),
+      number: `PED-${year}-${num}`,
+      clientId: client.id,
+      clientName: name,
+      clientWhatsapp: phone,
+      items,
+      total: Number(total) || items.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.qty) || 1), 0),
+      status: 'novo',
+      date: new Date().toISOString(),
+      notes: notes || '',
+      source: 'site'
+    };
+
+    data.orders = data.orders || [];
+    data.orders.push(order);
+    localStorage.setItem(KEY, JSON.stringify(data));
+
+    // Tenta gravar na Hostinger (vÃ¡rios celulares)
+    try {
+      if (location.protocol !== 'file:') {
+        await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'create_order',
+            order,
+            client
+          })
+        });
+      }
+    } catch (e) {
+      /* local jÃ¡ salvou */
+    }
+
+    return { ok: true, order };
+  }
+
   return {
     init, getAll, save,
     getSettings, saveSettings,
@@ -372,11 +653,17 @@ const Storage = (() => {
     getClients, saveClients,
     getOrders, saveOrders,
     getReviews, getFaq, getGallery,
-    login, updatePassword,
+    login, loginAsync, updatePassword,
     generateId, generateOrderNumber,
     getCategoryName, formatCurrency,
-    getDashboardStats, getMonthlyRevenue
+    getDashboardStats, getMonthlyRevenue,
+    getFinishedOrdersByPeriod, getProductSalesBreakdown, getSalesPeriodStats,
+    initCloud, pullFull, pullPublic, pushToCloud,
+    isCloudEnabled, setAdminPassword, getAdminPassword,
+    startCloudPolling, stopCloudPolling, notifyUpdated,
+    createPublicOrder
   };
 })();
 
 Storage.init();
+

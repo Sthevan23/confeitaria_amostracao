@@ -1,11 +1,23 @@
-# Flor de Açúcar — Site demonstração para confeitarias
+# Flor de Acucar — Demo com site + financeiro
 
-Modelo de site para apresentar a outras confeitarias (cardápio, WhatsApp, galeria, avaliações, FAQ e contato).
+Modelo para apresentar a confeitarias: site publico + painel com pedidos e financeiro.
+
+Site online: https://sthevan23.github.io/confeitaria_amostracao/
 
 ## Como abrir
 
-Abra `index.html` no navegador. Se as fotos não atualizarem, use Ctrl+F5 ou aba anônima.
+- Site: `index.html`
+- Admin: `admin/login.html` (ou link Area admin no rodape)
+
+### Login demo
+
+- E-mail: contato@flordeacucar.com.br
+- Senha: demo123
+
+### O que mostrar no painel
+
+- Dashboard, Pedidos, Financeiro (grafico e vendas), Produtos, Clientes
 
 ## Fotos
 
-As imagens em `imagens/` são fotos de bolos de banco livre (Pexels), ideais para demonstração. Troque pelas fotos reais da cliente quando for personalizar.
+As imagens em `imagens/` sao de demonstracao (Pexels). Troque pelas fotos reais ao personalizar.

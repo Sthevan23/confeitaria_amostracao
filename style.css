@@ -3231,3 +3231,67 @@ em { font-family: var(--font-title); font-style: italic; color: var(--verde); }
 @media (min-width: 1025px) {
   .header__cta { display: inline-flex; }
 }
+
+/* --- Dados do cliente (pedido) --- */
+.customer-fields {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+  padding: 14px;
+  background: rgba(14, 82, 68, 0.04);
+  border: 1px solid rgba(14, 82, 68, 0.12);
+  border-radius: 12px;
+}
+
+.customer-fields--menu {
+  margin: 20px 0 8px;
+}
+
+.customer-fields__title {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary, #0e5244);
+}
+
+.customer-fields__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.customer-fields .order-field {
+  margin: 0;
+}
+
+.customer-fields input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(21, 32, 28, 0.15);
+  border-radius: 8px;
+  font: inherit;
+  background: #fff;
+}
+
+.customer-fields input:focus {
+  outline: 2px solid rgba(14, 82, 68, 0.35);
+  border-color: #0e5244;
+}
+
+.customer-fields__hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #b42318;
+}
+
+@media (max-width: 640px) {
+  .customer-fields__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer__bottom a {
+  color: var(--accent, #d9926f);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
