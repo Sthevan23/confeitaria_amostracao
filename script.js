@@ -226,7 +226,13 @@ function observeRevealElements(container) {
   const parent = typeof container === 'string' ? document.querySelector(container) : container;
   if (!parent) return;
 
-  const reveals = parent.querySelectorAll('.reveal:not(.visible)');
+  const reveals = [...parent.querySelectorAll('.reveal:not(.visible)')];
+  reveals.forEach((el, index) => {
+    const delay = Math.min(index % 6, 5) * 70;
+    el.style.transitionDelay = `${delay}ms`;
+    el.style.animationDelay = `${delay}ms`;
+  });
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
